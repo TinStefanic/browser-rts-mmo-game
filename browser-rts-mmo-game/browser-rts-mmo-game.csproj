@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-browser_rts_mmo_game-CD003A17-C08C-4540-BEFC-E21DC266508B</UserSecretsId>
+    <RootNamespace>browser_rts_mmo_game</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2" />
+  </ItemGroup>
+
+</Project>

@@ -21,14 +21,14 @@ namespace BrowserGame.Data
                 UserName = "admin",
                 NormalizedUserName = "admin",
                 Email = "email@email.com",
-                NormalizedEmail = "admin@email.com",
+                NormalizedEmail = "email@email.com",
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
             var password = new PasswordHasher<IdentityUser>();
-            var hashed = password.HashPassword(user, "password");
+            var hashed = password.HashPassword(user, "pass_1234");
             user.PasswordHash = hashed;
             var userStore = new UserStore<IdentityUser>(context);
             await userStore.CreateAsync(user);

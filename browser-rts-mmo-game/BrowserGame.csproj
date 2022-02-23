@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-browser_rts_mmo_game-CD003A17-C08C-4540-BEFC-E21DC266508B</UserSecretsId>
     <RootNamespace>BrowserGame</RootNamespace>

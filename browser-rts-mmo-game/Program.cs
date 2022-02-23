@@ -1,4 +1,5 @@
 using BrowserGame.Data;
+using BrowserGame.Static;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
+
+TimeManager.Speed = int.Parse(builder.Configuration.GetSection("GameSpeed").Value);
 
 var app = builder.Build();
 
@@ -33,6 +36,10 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<ApplicationDbContext>();
+
+    await context.Database.EnsureDeletedAsync();
+    await context.Database.EnsureCreatedAsync();
+
     //await DbInitializer.InitializeAsync(context);
 }
 

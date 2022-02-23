@@ -1,4 +1,6 @@
-﻿namespace BrowserGame.Models
+﻿using BrowserGame.Models.Misc;
+
+namespace BrowserGame.Models
 {
 	public class Wood : ResourceBase
 	{

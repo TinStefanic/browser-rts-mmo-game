@@ -12,8 +12,10 @@ namespace BrowserGame.Models
 
 		public int UpkeepBuildings { get; set; }
 
+		[NotMapped]
 		public override int ProductionPerHour => base.ProductionPerHour - Upkeep;
 
-		public bool CanAddUpgradeBuilding => base.ProductionPerHour - UpkeepBuildings > 10;
+		// If crop production is to low, don't allow upgrading or creating buildings.
+		public bool CanAddUpgradeBuildings => base.ProductionPerHour - UpkeepBuildings > 10;
 	}
 }

@@ -16,4 +16,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Internal\" />
+    <Folder Include="Pages\Game\" />
+  </ItemGroup>
+
 </Project>

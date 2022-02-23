@@ -7,7 +7,7 @@ namespace BrowserGame.Models.Misc
 	{
 		public int Id { get; set; }
 
-		public IList<ResourceField> Fields { get; set; } = new List<ResourceField>();
+		public virtual IList<ResourceField> Fields { get; set; } = new List<ResourceField>();
 
 		public int MaxCapacity { get; set; } = 1000;
 
@@ -31,6 +31,7 @@ namespace BrowserGame.Models.Misc
 		/// <summary>
 		/// Returns how much of this resource is currently available.
 		/// </summary>
+		[Column(TypeName = "decimal(18, 2)")]
 		public decimal Available
 		{
 			get => GetAvailable();

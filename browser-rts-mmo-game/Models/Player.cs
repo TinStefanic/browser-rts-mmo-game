@@ -12,14 +12,14 @@ namespace BrowserGame.Models
 
         [Required, ForeignKey("IdentityUser")]
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public virtual IdentityUser User { get; set; }
 
 
         [Required, StringLength(64, MinimumLength = 3)]
         public string Name { get; set; }
 
-        [ForeignKey("City")]
+        [ForeignKey("CapitalId")]
+        public virtual City Capital { get; set; }
         public int? CapitalId { get; set; }
-        public City Capital { get; set; }
     }
 }

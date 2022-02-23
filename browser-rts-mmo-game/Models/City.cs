@@ -16,16 +16,16 @@ namespace BrowserGame.Models
 		public string Name { get; set; }
 
 		public int ClayId { get; set; }
-		public Clay Clay { get; set; }
+		public virtual Clay Clay { get; set; }
 
 		public int WoodId { get; set; }
-		public Wood Wood { get; set; }
+		public virtual Wood Wood { get; set; }
 
 		public int IronId { get; set; }
-		public Iron Iron { get; set; }
+		public virtual Iron Iron { get; set; }
 
 		public int CropId { get; set; }
-		public Crop Crop { get; set; }
+		public virtual Crop Crop { get; set; }
 
 	}
 }

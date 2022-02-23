@@ -23,6 +23,7 @@ namespace BrowserGame.Models
 		public int AdditionalCropUpkeep { get; set; }
 
 		// Represents delta change in building specific value.
+		[Column(TypeName = "decimal(18, 2)")]
 		public decimal ValueChange { get; set; }
 
 		[NotMapped]

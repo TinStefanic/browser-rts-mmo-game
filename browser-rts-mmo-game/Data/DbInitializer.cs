@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace browser_rts_mmo_game.Data
+namespace BrowserGame.Data
 {
     // Based on:
     // https://stackoverflow.com/a/34791867

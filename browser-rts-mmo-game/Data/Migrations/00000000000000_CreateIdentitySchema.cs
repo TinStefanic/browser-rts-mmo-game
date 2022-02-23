@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace browser_rts_mmo_game.Data.Migrations
+namespace BrowserGame.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

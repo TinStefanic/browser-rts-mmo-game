@@ -1,4 +1,4 @@
-using browser_rts_mmo_game.Data;
+using BrowserGame.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

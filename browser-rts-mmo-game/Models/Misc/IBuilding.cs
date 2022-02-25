@@ -9,5 +9,8 @@
 		int Level { get; set; }
 
 		int CropUpkeep { get; set; }
+
+		int? CityId { get; set; }
+		City City { get; set; }
 	}
 }

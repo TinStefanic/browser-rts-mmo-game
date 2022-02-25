@@ -13,5 +13,8 @@ namespace BrowserGame.Models
 		public int Level { get; set; } = 0;
 
 		public int CropUpkeep { get; set; } = 0;
+
+		public int? CityId { get; set; }
+		public virtual City City { get; set; }
 	}
 }

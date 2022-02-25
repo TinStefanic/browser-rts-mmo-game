@@ -77,20 +77,32 @@ namespace BrowserGame.Pages.Game
 		{
             _context.Clays.Add(newCity.Clay);
             foreach (ResourceField rf in newCity.Clay.Fields)
-                _context.ResourceFields.Add(rf);
+			{
+                rf.City = newCity;
+				_context.ResourceFields.Add(rf);
+			}
 
-            _context.Irons.Add(newCity.Iron);
+			_context.Irons.Add(newCity.Iron);
             foreach (ResourceField rf in newCity.Iron.Fields)
+			{
+                rf.City = newCity;
                 _context.ResourceFields.Add(rf);
+			}
 
-            _context.Woods.Add(newCity.Wood);
+			_context.Woods.Add(newCity.Wood);
             foreach (ResourceField rf in newCity.Wood.Fields)
+			{
+                rf.City = newCity;
                 _context.ResourceFields.Add(rf);
+			}
 
-            _context.Crops.Add(newCity.Crop);
+			_context.Crops.Add(newCity.Crop);
             foreach (ResourceField rf in newCity.Crop.Fields)
+			{
+                rf.City = newCity;
                 _context.ResourceFields.Add(rf);
-        }
+			}
+		}
 
         private async Task<string> RedirectIfAlreadyCreatedAsync()
 		{

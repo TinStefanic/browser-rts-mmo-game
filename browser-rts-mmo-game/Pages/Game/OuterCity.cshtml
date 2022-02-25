@@ -5,19 +5,30 @@
 @{
     var city = (City)ViewData["City"];
     ViewData["Title"] = city.Name;
+    var clayColor = "danger";
+    var ironColor = "secondary";
+    var woodColor = "success";
+    var cropColor = "warning";
 }
 
 <partial name="./_CommonGameNavigation" />
 
+<div class="row justify-content-around text-center">
+    <div class="col-md-3 text-@clayColor"><h4>Clay @city.Clay.Available / @city.Clay.MaxCapacity , +@city.Clay.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@ironColor"><h4>Iron @city.Iron.Available / @city.Iron.MaxCapacity , +@city.Iron.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@woodColor"><h4>Wood @city.Wood.Available / @city.Wood.MaxCapacity , +@city.Wood.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@cropColor"><h4>Crop @city.Crop.Available / @city.Crop.MaxCapacity , +@city.Crop.ProductionPerHour</h4></div>
+</div>
+
 <div class="row text-center justify-content-center">
     <div class="col-md-3">
         <div class="row justify-content-center">
-            <div class="col-8 text-danger">
+            <div class="col-8 text-@clayColor">
                 <div><h3>Clay</h3></div>
                 <div class="row justify-content-around">
                     @foreach (ResourceField resourceField in city.Clay.Fields) {
-                        <div class="col-5 mt-2 border border-danger">
-                            <a class="text-danger" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                        <div class="col-5 mt-2 border border-@clayColor">
+                            <a class="text-@clayColor" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>
@@ -28,12 +39,12 @@
     </div>
     <div class="col-md-3">
         <div class="row justify-content-center">
-            <div class="col-8 text-secondary">
+            <div class="col-8 text-@ironColor">
                 <div><h3>Iron</h3></div>
                 <div class="row justify-content-around">
                     @foreach (ResourceField resourceField in city.Iron.Fields) {
-                        <div class="col-5 mt-2 border border-secondary">
-                            <a class="text-secondary" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                        <div class="col-5 mt-2 border border-@ironColor">
+                            <a class="text-@ironColor" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>
@@ -44,12 +55,12 @@
     </div>
     <div class="col-md-3">
         <div class="row justify-content-center">
-            <div class="col-8 text-success">
+            <div class="col-8 text-@woodColor">
                 <div><h3>Wood</h3></div>
                 <div class="row justify-content-around">
                     @foreach (ResourceField resourceField in city.Wood.Fields) {
-                        <div class="col-5 mt-2 border border-success">
-                            <a class="text-success" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                        <div class="col-5 mt-2 border border-@woodColor">
+                            <a class="text-@woodColor" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>
@@ -61,12 +72,12 @@
 
     <div class="col-md-9">
         <div class="row justify-content-center">
-            <div class="col-8 text-warning">
+            <div class="col-8 text-@cropColor">
                 <div><h3>Crop</h3></div>
                 <div class="row justify-content-around">
                     @foreach (ResourceField resourceField in city.Crop.Fields) {
-                        <div class="col-2 mt-2 mr-2 border border-warning">
-                            <a class="text-warning" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                        <div class="col-2 mt-2 mr-2 border border-@cropColor">
+                            <a class="text-@cropColor" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>

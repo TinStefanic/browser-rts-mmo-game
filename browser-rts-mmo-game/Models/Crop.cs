@@ -17,5 +17,11 @@ namespace BrowserGame.Models
 
 		// If crop production is to low, don't allow upgrading or creating buildings.
 		public bool CanAddUpgradeBuildings => base.ProductionPerHour - UpkeepBuildings > 10;
+
+		public Crop() { }
+		public Crop(int numFields)
+		{
+			InitFieldsList(numFields, Type);
+		}
 	}
 }

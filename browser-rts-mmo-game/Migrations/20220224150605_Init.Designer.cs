@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BrowserGame.Data.Migrations
+namespace BrowserGame.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220223212221_BasicModels")]
-    partial class BasicModels
+    [Migration("20220224150605_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,13 +32,13 @@ namespace BrowserGame.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ClayId")
+                    b.Property<int?>("ClayId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CropId")
+                    b.Property<int?>("CropId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IronId")
+                    b.Property<int?>("IronId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -49,7 +49,7 @@ namespace BrowserGame.Data.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WoodId")
+                    b.Property<int?>("WoodId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -61,6 +61,9 @@ namespace BrowserGame.Data.Migrations
                     b.HasIndex("IronId");
 
                     b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("PlayerId")
                         .IsUnique();
 
                     b.HasIndex("WoodId");
@@ -154,26 +157,23 @@ namespace BrowserGame.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CapitalId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CapitalId");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Players");
                 });
@@ -207,9 +207,6 @@ namespace BrowserGame.Data.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpgradeInfoId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("WoodId")
                         .HasColumnType("int");
 
@@ -221,8 +218,6 @@ namespace BrowserGame.Data.Migrations
 
                     b.HasIndex("IronId");
 
-                    b.HasIndex("UpgradeInfoId");
-
                     b.HasIndex("WoodId");
 
                     b.ToTable("ResourceFields");
@@ -230,11 +225,9 @@ namespace BrowserGame.Data.Migrations
 
             modelBuilder.Entity("BrowserGame.Models.UpgradeInfo", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<int>("AdditionalCropUpkeep")
                         .HasColumnType("int");
@@ -499,27 +492,25 @@ namespace BrowserGame.Data.Migrations
                 {
                     b.HasOne("BrowserGame.Models.Clay", "Clay")
                         .WithMany()
-                        .HasForeignKey("ClayId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClayId");
 
                     b.HasOne("BrowserGame.Models.Crop", "Crop")
                         .WithMany()
-                        .HasForeignKey("CropId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CropId");
 
                     b.HasOne("BrowserGame.Models.Iron", "Iron")
                         .WithMany()
-                        .HasForeignKey("IronId")
+                        .HasForeignKey("IronId");
+
+                    b.HasOne("BrowserGame.Models.Player", "Player")
+                        .WithOne("Capital")
+                        .HasForeignKey("BrowserGame.Models.City", "PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BrowserGame.Models.Wood", "Wood")
                         .WithMany()
-                        .HasForeignKey("WoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WoodId");
 
                     b.Navigation("Clay");
 
@@ -527,24 +518,9 @@ namespace BrowserGame.Data.Migrations
 
                     b.Navigation("Iron");
 
+                    b.Navigation("Player");
+
                     b.Navigation("Wood");
-                });
-
-            modelBuilder.Entity("BrowserGame.Models.Player", b =>
-                {
-                    b.HasOne("BrowserGame.Models.City", "Capital")
-                        .WithMany()
-                        .HasForeignKey("CapitalId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Capital");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BrowserGame.Models.ResourceField", b =>
@@ -561,17 +537,9 @@ namespace BrowserGame.Data.Migrations
                         .WithMany("Fields")
                         .HasForeignKey("IronId");
 
-                    b.HasOne("BrowserGame.Models.UpgradeInfo", "UpgradeInfo")
-                        .WithMany()
-                        .HasForeignKey("UpgradeInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BrowserGame.Models.Wood", null)
                         .WithMany("Fields")
                         .HasForeignKey("WoodId");
-
-                    b.Navigation("UpgradeInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -638,6 +606,11 @@ namespace BrowserGame.Data.Migrations
             modelBuilder.Entity("BrowserGame.Models.Iron", b =>
                 {
                     b.Navigation("Fields");
+                });
+
+            modelBuilder.Entity("BrowserGame.Models.Player", b =>
+                {
+                    b.Navigation("Capital");
                 });
 
             modelBuilder.Entity("BrowserGame.Models.Wood", b =>

@@ -1,0 +1,78 @@
+﻿@page "{id:int?}"
+@using BrowserGame.Models
+@model BrowserGame.Pages.Game.OuterCityModel
+
+@{
+    var city = (City)ViewData["City"];
+    ViewData["Title"] = city.Name;
+}
+
+<partial name="./_CommonGameNavigation" />
+
+<div class="row text-center justify-content-center">
+    <div class="col-md-3">
+        <div class="row justify-content-center">
+            <div class="col-8 text-danger">
+                <div><h3>Clay</h3></div>
+                <div class="row justify-content-around">
+                    @foreach (ResourceField resourceField in city.Clay.Fields) {
+                        <div class="col-5 mt-2 border border-danger">
+                            <a class="text-danger" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                                <h4>@resourceField.Level</h4>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row justify-content-center">
+            <div class="col-8 text-secondary">
+                <div><h3>Iron</h3></div>
+                <div class="row justify-content-around">
+                    @foreach (ResourceField resourceField in city.Iron.Fields) {
+                        <div class="col-5 mt-2 border border-secondary">
+                            <a class="text-secondary" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                                <h4>@resourceField.Level</h4>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row justify-content-center">
+            <div class="col-8 text-success">
+                <div><h3>Wood</h3></div>
+                <div class="row justify-content-around">
+                    @foreach (ResourceField resourceField in city.Wood.Fields) {
+                        <div class="col-5 mt-2 border border-success">
+                            <a class="text-success" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                                <h4>@resourceField.Level</h4>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="row justify-content-center">
+            <div class="col-8 text-warning">
+                <div><h3>Crop</h3></div>
+                <div class="row justify-content-around">
+                    @foreach (ResourceField resourceField in city.Crop.Fields) {
+                        <div class="col-2 mt-2 mr-2 border border-warning">
+                            <a class="text-warning" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                                <h4>@resourceField.Level</h4>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

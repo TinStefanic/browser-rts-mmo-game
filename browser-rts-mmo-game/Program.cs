@@ -19,7 +19,11 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Game");
 });
 
-TimeManager.Speed = int.Parse(builder.Configuration.GetSection("GameSpeed").Value);
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
+// Loads speed from appsettings.json into a property with private setter.
+typeof(TimeManager).GetProperty("Speed").SetValue(null, int.Parse(builder.Configuration.GetSection("GameSpeed").Value));
 
 var app = builder.Build();
 
@@ -41,9 +45,6 @@ using (var scope = app.Services.CreateScope())
 
     var context = services.GetRequiredService<ApplicationDbContext>();
 
-    await context.Database.EnsureDeletedAsync();
-    await context.Database.EnsureCreatedAsync();
-
     //await DbInitializer.InitializeAsync(context);
 }
 
@@ -54,6 +55,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

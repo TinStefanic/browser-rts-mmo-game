@@ -9,8 +9,5 @@
 		int Level { get; set; }
 
 		int CropUpkeep { get; set; }
-
-		int UpgradeInfoId { get; set; }
-		UpgradeInfo UpgradeInfo { get; set; }
 	}
 }

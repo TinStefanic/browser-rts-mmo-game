@@ -6,20 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BrowserGame.Models
 {
     [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(UserId), IsUnique = true)]
     public class Player
     {
         public int Id { get; set; }
 
-        [Required, ForeignKey("IdentityUser")]
+        [StringLength(400)]
         public string UserId { get; set; }
-        public virtual IdentityUser User { get; set; }
 
-
+        [Display(Name = "Player Name")]
         [Required, StringLength(64, MinimumLength = 3)]
         public string Name { get; set; }
 
-        [ForeignKey("CapitalId")]
         public virtual City Capital { get; set; }
-        public int? CapitalId { get; set; }
     }
 }

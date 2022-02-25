@@ -7,7 +7,7 @@ namespace BrowserGame.Models.Misc
 	{
 		public int Id { get; set; }
 
-		public virtual IList<ResourceField> Fields { get; set; } = new List<ResourceField>();
+		public virtual IList<ResourceField> Fields { get; set; }
 
 		public int MaxCapacity { get; set; } = 1000;
 
@@ -38,11 +38,22 @@ namespace BrowserGame.Models.Misc
 			protected set => _available = value;
 		}
 
+		protected void InitFieldsList(int numFields, string type)
+		{
+			Fields = new List<ResourceField>();
+
+			for (int i = 0; i < numFields; ++i)
+			{
+				Fields.Add(new ResourceField()
+				{
+					Type = type
+				});
+			}
+		}
+
 		private decimal GetAvailable()
 		{
-			long currentTime = TimeManager.Ticks;
-			decimal elapsedHours = (decimal)new TimeSpan(currentTime - LastUpdate).TotalHours;
-			LastUpdate = currentTime;
+			LastUpdate = TimeManager.UpdateTime(LastUpdate, out decimal elapsedHours);
 
 			_available = Math.Min(elapsedHours * ProductionPerHour, MaxCapacity);
 			return _available;

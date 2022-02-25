@@ -9,23 +9,19 @@ namespace BrowserGame.Models
 	{
 		public int Id { get; set; }
 
-		[Required]
 		public int PlayerId { get; set; }
+		public virtual Player Player { get; set; }
 
+		[Display(Name = "City Name")]
 		[Required, StringLength(50, MinimumLength = 3)]
 		public string Name { get; set; }
 
-		public int ClayId { get; set; }
-		public virtual Clay Clay { get; set; }
+		public virtual Clay Clay { get; set; } = new Clay(4);
 
-		public int WoodId { get; set; }
-		public virtual Wood Wood { get; set; }
+		public virtual Wood Wood { get; set; } = new Wood(4);
 
-		public int IronId { get; set; }
-		public virtual Iron Iron { get; set; }
+		public virtual Iron Iron { get; set; } = new Iron(4);
 
-		public int CropId { get; set; }
-		public virtual Crop Crop { get; set; }
-
+		public virtual Crop Crop { get; set; } = new Crop(6);
 	}
 }

@@ -1,10 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BrowserGame.Models
 {
 	public class UpgradeInfo
 	{
-		public int Id { get; set; }
+		// Key is in format:
+		// BuildingName#Level
+		[DatabaseGenerated(DatabaseGeneratedOption.None)]
+		[StringLength(400)]
+		public string Id
+		{
+			get => BuildingName + "#" + Level.ToString();
+			private set { ; }
+		}
 
 		public string BuildingName { get; set; }
 

@@ -13,8 +13,5 @@ namespace BrowserGame.Models
 		public int Level { get; set; } = 0;
 
 		public int CropUpkeep { get; set; } = 0;
-
-		public int UpgradeInfoId { get; set; }
-		public virtual UpgradeInfo UpgradeInfo { get; set; }
 	}
 }

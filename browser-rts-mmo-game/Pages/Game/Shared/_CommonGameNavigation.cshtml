@@ -1,0 +1,25 @@
+﻿@using BrowserGame.Internal
+@{
+    var cityManager = (CityManager)ViewData["CityManager"];
+    ViewData["Title"] = cityManager.Name;
+
+    ViewData["clayColor"] = "danger";
+    ViewData["ironColor"] = "secondary";
+    ViewData["woodColor"] = "success";
+    ViewData["cropColor"] = "warning";
+}
+
+<div class="row justify-content-around text-center">
+    <div class="col-3"><h3><a asp-area="" asp-page="Game/OuterCity">Outer City</a></h3></div>
+</div>
+
+<div class="text-center">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<div class="row justify-content-around text-center">
+    <div class="col-md-3 text-@ViewData["clayColor"]"><h4>Clay @cityManager.Clay.Available / @cityManager.Clay.MaxCapacity , +@cityManager.Clay.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@ViewData["ironColor"]"><h4>Iron @cityManager.Iron.Available / @cityManager.Iron.MaxCapacity , +@cityManager.Iron.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@ViewData["woodColor"]"><h4>Wood @cityManager.Wood.Available / @cityManager.Wood.MaxCapacity , +@cityManager.Wood.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@ViewData["cropColor"]"><h4>Crop @cityManager.Crop.Available / @cityManager.Crop.MaxCapacity , +@cityManager.Crop.ProductionPerHour</h4></div>
+</div>

@@ -1,6 +1,50 @@
-﻿@page "{id:int?}"
+﻿@page "{id:int}"
 @using BrowserGame.Models
+@using BrowserGame.Internal
 @model BrowserGame.Pages.Game.UpgradeFieldModel
+
 @{
-    
+    var cityManager = (CityManager)ViewData["CityManager"];
+    var resourceField = (ResourceField)ViewData["ResourceField"];
+    var upgrade = (UpgradeInfo)ViewData["UpgradeInfo"];
+
+    var span = TimeSpan.FromSeconds(cityManager.GetBuildTime(upgrade));
+
+    var postButtonDisabled = await cityManager.CanUpgradeAsync(upgrade) ? "" : "disabled";
 }
+
+<partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
+
+@if (upgrade.IsFinnalUpgrade)
+{
+    <div class="text-center">
+        Building is full upgraded!
+    </div>
+}
+else
+{
+    <div class="text-center">
+    <div><h2>@resourceField.Name</h2></div>
+    <div>Cost to upgrade: </div>
+    <div>
+        <span class="text-@ViewData["clayColor"]">@upgrade.ClayCost</span>
+        <span class="text-@ViewData["ironColor"]">@upgrade.IronCost</span>
+        <span class="text-@ViewData["woodColor"]">@upgrade.WoodCost</span>
+        <span class="text-@ViewData["cropColor"]">@upgrade.ClayCost</span>
+    </div>
+    <div>
+      Additional crop upkeep @upgrade.AdditionalCropUpkeep
+    </div>
+      Build time: @span.Days day@(span.Days == 1 ? "" : "s"), @span.Hours hour@(span.Hours == 1 ? "" : "s"),
+      @span.Minutes minute@(span.Minutes == 1 ? "" : "s") and @span.Seconds second@(span.Seconds == 1 ? "" : "s").
+    </div>
+
+     <form method="post">
+        <div class="form-group">
+            <input type="submit" value="Upgrade" class="btn btn-primary" @postButtonDisabled />
+        </div>
+    </form>
+}
+
+
+<partial name="./Shared/_CommonBuildProgress" view-data="ViewData"/>

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using System.Security.Claims;
+using BrowserGame.Static;
+using BrowserGame.Internal;
 
 namespace BrowserGame.Pages.Game
 {
@@ -20,7 +22,7 @@ namespace BrowserGame.Pages.Game
             _context = context;
         }
 
-        public City City { get; set; }
+        internal CityManager CityManager { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,18 +36,14 @@ namespace BrowserGame.Pages.Game
                 id = player.Capital.Id;
             }
 
-            City = await _context.Cities.Include(c => c.Clay.Fields)
-                                        .Include(c => c.Wood.Fields)
-                                        .Include(c => c.Iron.Fields)
-                                        .Include(c => c.Crop.Fields)
-                                        .FirstOrDefaultAsync(m => m.Id == id);
+            CityManager = await CityManager.LoadCityManagerAsync(id ?? 0, _context);
 
-            if (City == null)
+            if (CityManager.NotUsers(User))
             {
                 return NotFound();
             }
 
-            ViewData["City"] = City;
+            ViewData["CityManager"] = CityManager;
             return Page();
         }
     }

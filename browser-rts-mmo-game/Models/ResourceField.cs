@@ -6,7 +6,7 @@ namespace BrowserGame.Models
 	{
 		public int Id { get; set; }
 
-		public string Type { get; set; }
+		public string Name { get; set; }
 
 		public int ProductionPerHour { get; set; } = 5;
 
@@ -16,5 +16,8 @@ namespace BrowserGame.Models
 
 		public int? CityId { get; set; }
 		public virtual City City { get; set; }
+
+		public bool IsUpgradeInProgress { get; set; } = false;
+		public BuildingType BuildingType => BuildingType.Resource;
 	}
 }

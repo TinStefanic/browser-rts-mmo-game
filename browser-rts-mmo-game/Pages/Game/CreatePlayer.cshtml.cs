@@ -67,6 +67,8 @@ namespace BrowserGame.Pages.Game
 
             AddResources(newCity);
 
+            _context.BuildQueues.Add(newCity.BuildQueue);
+
             newPlayer.Capital = newCity;
             await _context.SaveChangesAsync();
 

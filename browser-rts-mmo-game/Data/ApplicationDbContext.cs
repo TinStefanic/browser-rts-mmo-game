@@ -14,6 +14,7 @@ namespace BrowserGame.Data
         public DbSet<ResourceField> ResourceFields { get; set; }
         public DbSet<UpgradeInfo> UpgradeInfos { get; set; }
         public DbSet<Wood> Woods { get; set; }
+        public DbSet<BuildQueue> BuildQueues { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

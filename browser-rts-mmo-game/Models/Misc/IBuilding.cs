@@ -4,7 +4,7 @@
 	{
 		int Id { get; set; }
 
-		string Type { get; set; }
+		string Name { get; set; }
 
 		int Level { get; set; }
 
@@ -12,5 +12,14 @@
 
 		int? CityId { get; set; }
 		City City { get; set; }
+
+		bool IsUpgradeInProgress { get; set; }
+
+		BuildingType BuildingType { get; }
+	}
+
+	public enum BuildingType
+	{
+		Resource, CityBuilding
 	}
 }

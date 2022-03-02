@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using BrowserGame.Models;
+using BrowserGame.Models.Misc;
+using System.Security.Claims;
 
 namespace BrowserGame.Static
 {
@@ -7,6 +9,15 @@ namespace BrowserGame.Static
 		public static string GetUserId(ClaimsPrincipal user)
 		{
 			return user.FindFirst(ClaimTypes.NameIdentifier).Value;
+		}
+
+		public static string GetUpgradeInfoId(string buildingName, int level)
+		{
+			return buildingName + "#" + level.ToString();
+		}
+		public static string GetUpgradeInfoId(IBuilding building)
+		{
+			return GetUpgradeInfoId(building.Name, building.Level);
 		}
 	}
 }

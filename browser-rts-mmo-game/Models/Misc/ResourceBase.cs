@@ -38,6 +38,11 @@ namespace BrowserGame.Models.Misc
 			protected set => _available = value;
 		}
 
+		public void SpendResource(int amount)
+		{
+			_available = Available - amount;
+		}
+
 		protected void InitFieldsList(int numFields, string type)
 		{
 			Fields = new List<ResourceField>();
@@ -46,7 +51,7 @@ namespace BrowserGame.Models.Misc
 			{
 				Fields.Add(new ResourceField()
 				{
-					Type = type
+					Name = type
 				});
 			}
 		}

@@ -1,0 +1,11 @@
+﻿@using BrowserGame.Internal
+@{
+    var cityManager = (CityManager)ViewData["CityManager"];
+}
+
+@if (await cityManager.IsBuildInProgressAsync()) {
+    <div>
+        Currently building level @cityManager.BuildTargetLevel @cityManager.BuildTargetName, building will complete at @(cityManager.CompletionTime).
+    </div>
+} 
+

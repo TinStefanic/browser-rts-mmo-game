@@ -1,17 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BrowserGame.Static;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BrowserGame.Models
 {
 	public class UpgradeInfo
 	{
-		// Key is in format:
-		// BuildingName#Level
 		[DatabaseGenerated(DatabaseGeneratedOption.None)]
 		[StringLength(400)]
 		public string Id
 		{
-			get => BuildingName + "#" + Level.ToString();
+			get => GameSession.GetUpgradeInfoId(BuildingName, Level);
 			private set { ; }
 		}
 
@@ -31,11 +30,18 @@ namespace BrowserGame.Models
 
 		public int AdditionalCropUpkeep { get; set; }
 
-		// Represents delta change in building specific value.
+		/// <summary>
+		/// In seconds.
+		/// </summary>
+		public int UpgradeDuration { get; set; }
+
+		/// <summary>
+		/// Represents delta change in building specific value.
+		/// </summary>
 		[Column(TypeName = "decimal(18, 2)")]
-		public decimal ValueChange { get; set; }
+		public decimal ValueChangeDecimal { get; set; }
 
 		[NotMapped]
-		public int ValueChangeInt => Convert.ToInt32(ValueChange);
+		public int ValueChangeInt => Convert.ToInt32(ValueChangeDecimal);
 	}
 }

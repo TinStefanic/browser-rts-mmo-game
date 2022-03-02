@@ -23,5 +23,11 @@ namespace BrowserGame.Models
 		public virtual Iron Iron { get; set; } = new Iron(4);
 
 		public virtual Crop Crop { get; set; } = new Crop(6);
+
+		public virtual BuildQueue BuildQueue { get; set; }
+		public City()
+		{
+			BuildQueue = new BuildQueue(this);
+		}
 	}
 }

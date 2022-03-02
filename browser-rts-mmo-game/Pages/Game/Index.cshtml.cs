@@ -5,9 +5,9 @@ namespace BrowserGame.Pages.Game
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            
+            return Redirect("/Game/CreatePlayer");
 		}
     }
 }

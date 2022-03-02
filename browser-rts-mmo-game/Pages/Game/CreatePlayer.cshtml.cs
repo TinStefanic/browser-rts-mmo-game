@@ -72,7 +72,7 @@ namespace BrowserGame.Pages.Game
             newPlayer.Capital = newCity;
             await _context.SaveChangesAsync();
 
-            return Redirect($"./OuterCity/{newCity.Id}");
+            return Redirect($"Game/OuterCity/{newCity.Id}");
         }
 
         private void AddResources(City newCity)
@@ -111,7 +111,7 @@ namespace BrowserGame.Pages.Game
             Player player = await _context.Players.Include(p => p.Capital)
 											   .FirstOrDefaultAsync(p => p.UserId == GameSession.GetUserId(User));
 
-            if (player != null) return $"./OuterCity/{player.Capital.Id}";
+            if (player != null) return $"/Game/OuterCity/{player.Capital.Id}";
             return null;
         }
     }

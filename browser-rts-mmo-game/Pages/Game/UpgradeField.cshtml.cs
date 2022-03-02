@@ -55,7 +55,7 @@ namespace BrowserGame.Pages.Game
                 return NotFound();
 
             if (await CityManager.TryUpgradeAsync(ResourceField))
-                return Redirect($"Game/OuterCity/{CityManager.Id}");
+                return Redirect($"/Game/OuterCity/{CityManager.Id}");
             else
                 return Page();
         }

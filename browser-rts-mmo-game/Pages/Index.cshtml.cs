@@ -12,9 +12,12 @@ namespace BrowserGame.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (User.Identity.IsAuthenticated)
+                return Redirect("/Game");
 
+            return Page();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@page "{id:int}"
 @using BrowserGame.Models
 @using BrowserGame.Internal
+@using BrowserGame.Static
 @model BrowserGame.Pages.Game.UpgradeFieldModel
 
 @{
@@ -27,10 +28,10 @@ else
     <div><h2>@resourceField.Name</h2></div>
     <div>Cost to upgrade: </div>
     <div>
-        <span class="text-@ViewData["clayColor"]">@upgrade.ClayCost</span>
-        <span class="text-@ViewData["ironColor"]">@upgrade.IronCost</span>
-        <span class="text-@ViewData["woodColor"]">@upgrade.WoodCost</span>
-        <span class="text-@ViewData["cropColor"]">@upgrade.ClayCost</span>
+        <span class="text-@HtmlColors.Clay">@upgrade.ClayCost</span>
+        <span class="text-@HtmlColors.Iron">@upgrade.IronCost</span>
+        <span class="text-@HtmlColors.Wood">@upgrade.WoodCost</span>
+        <span class="text-@HtmlColors.Crop">@upgrade.ClayCost</span>
     </div>
     <div>
       Additional crop upkeep @upgrade.AdditionalCropUpkeep

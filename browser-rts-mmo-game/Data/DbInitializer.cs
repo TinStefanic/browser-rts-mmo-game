@@ -1,39 +1,72 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BrowserGame.Internal;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BrowserGame.Data
 {
-    // Based on:
-    // https://stackoverflow.com/a/34791867
     public static class DbInitializer
     {
         public static async Task InitializeAsync(ApplicationDbContext context)
         {
-            await SeedTestAdminUserAsync(context);
+            if (context.UpgradeInfos.Any()) return;
+
+            var upgradeSeeder = new UpgradeSeeder(context);
+
+            await SeedResourceFieldUpgradesAsync(upgradeSeeder);
         }
 
-        private static async Task SeedTestAdminUserAsync(ApplicationDbContext context)
+        private static async Task SeedResourceFieldUpgradesAsync(UpgradeSeeder upgradeSeeder)
         {
-            if (context.Users.Any()) return; // Already Seeded
+            int r1 = 50, r2 = 35, r3 = 15, r4 = 20, r5 = 10;
+            int production = 5, buildTime = 60;
 
-            var user = new IdentityUser
+            var upgradeSettings = new UpgradeSeederSettings
             {
-                UserName = "admin",
-                NormalizedUserName = "admin",
-                Email = "email@email.com",
-                NormalizedEmail = "email@email.com",
-                EmailConfirmed = true,
-                LockoutEnabled = false,
-                SecurityStamp = Guid.NewGuid().ToString()
+                Clay = r1,
+                Wood = r2,
+                Iron = r3,
+                Crop = r4,
+                Value = production,
+                BuildTime = buildTime,
+                BuildingName = "Iron"
             };
+            await upgradeSeeder.GenerateAsync(upgradeSettings);
 
-            var password = new PasswordHasher<IdentityUser>();
-            var hashed = password.HashPassword(user, "pass_1234");
-            user.PasswordHash = hashed;
-            var userStore = new UserStore<IdentityUser>(context);
-            await userStore.CreateAsync(user);
+            upgradeSettings = new UpgradeSeederSettings
+            {
+                Clay = r3,
+                Wood = r1,
+                Iron = r2,
+                Crop = r4,
+                Value = production,
+                BuildTime = buildTime,
+                BuildingName = "Clay"
+            };
+            await upgradeSeeder.GenerateAsync(upgradeSettings);
 
-            await context.SaveChangesAsync();
+            upgradeSettings = new UpgradeSeederSettings
+            {
+                Clay = r1,
+                Wood = r2,
+                Iron = r2,
+                Crop = r5,
+                Value = production,
+                BuildTime = buildTime,
+                BuildingName = "Wood"
+            };
+            await upgradeSeeder.GenerateAsync(upgradeSettings);
+
+            upgradeSettings = new UpgradeSeederSettings
+            {
+                Clay = r2,
+                Wood = r1,
+                Iron = r3,
+                Crop = r4,
+                Value = production,
+                BuildTime = buildTime,
+                BuildingName = "Crop"
+            };
+            await upgradeSeeder.GenerateAsync(upgradeSettings);
         }
     }
 }

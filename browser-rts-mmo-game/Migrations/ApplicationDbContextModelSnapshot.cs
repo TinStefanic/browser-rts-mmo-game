@@ -53,7 +53,7 @@ namespace BrowserGame.Migrations
                     b.HasIndex("CityId")
                         .IsUnique();
 
-                    b.ToTable("BuildQueues");
+                    b.ToTable("BuildQueues", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.City", b =>
@@ -100,7 +100,7 @@ namespace BrowserGame.Migrations
 
                     b.HasIndex("WoodId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.Clay", b =>
@@ -125,7 +125,7 @@ namespace BrowserGame.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clays");
+                    b.ToTable("Clays", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.Crop", b =>
@@ -153,7 +153,7 @@ namespace BrowserGame.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Crops");
+                    b.ToTable("Crops", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.Iron", b =>
@@ -178,7 +178,7 @@ namespace BrowserGame.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Irons");
+                    b.ToTable("Irons", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.Player", b =>
@@ -207,7 +207,7 @@ namespace BrowserGame.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.ResourceField", b =>
@@ -260,7 +260,7 @@ namespace BrowserGame.Migrations
 
                     b.HasIndex("WoodId");
 
-                    b.ToTable("ResourceFields");
+                    b.ToTable("ResourceFields", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.UpgradeInfo", b =>
@@ -301,7 +301,7 @@ namespace BrowserGame.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UpgradeInfos");
+                    b.ToTable("UpgradeInfos", (string)null);
                 });
 
             modelBuilder.Entity("BrowserGame.Models.Wood", b =>
@@ -326,7 +326,7 @@ namespace BrowserGame.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Woods");
+                    b.ToTable("Woods", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

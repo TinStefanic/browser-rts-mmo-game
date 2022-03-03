@@ -45,7 +45,7 @@ using (var scope = app.Services.CreateScope())
 
     var context = services.GetRequiredService<ApplicationDbContext>();
 
-    //await DbInitializer.InitializeAsync(context);
+    await DbInitializer.InitializeAsync(context);
 }
 
 app.UseHttpsRedirection();

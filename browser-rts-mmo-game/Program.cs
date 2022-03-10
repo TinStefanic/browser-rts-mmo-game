@@ -45,6 +45,8 @@ using (var scope = app.Services.CreateScope())
 
     var context = services.GetRequiredService<ApplicationDbContext>();
 
+    await context.Database.MigrateAsync();
+
     await DbInitializer.InitializeAsync(context);
 }
 

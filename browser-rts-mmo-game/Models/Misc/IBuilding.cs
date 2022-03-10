@@ -13,6 +13,8 @@
 		int? CityId { get; set; }
 		City City { get; set; }
 
+		decimal Value { get; set; }
+
 		bool IsUpgradeInProgress { get; set; }
 
 		BuildingType BuildingType { get; }

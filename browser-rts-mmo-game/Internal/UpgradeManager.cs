@@ -5,6 +5,9 @@ using BrowserGame.Static;
 
 namespace BrowserGame.Internal
 {
+	/// <summary>
+	/// Doesn't call save changes on context.
+	/// </summary>
 	internal class UpgradeManager
 	{
 		private readonly ApplicationDbContext _context;
@@ -13,9 +16,19 @@ namespace BrowserGame.Internal
 		{
 			_context = context;
 		}
-		public async Task<bool> TryUpgradeAsync(IBuilding building)
+
+		public async Task StartUpgradeAsync(IBuilding building, City city)
 		{
-			throw new NotImplementedException();
+			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(building));
+			
+			building.IsUpgradeInProgress = true;
+
+			city.Clay.SpendResource(upgrade.ClayCost);
+			city.Wood.SpendResource(upgrade.WoodCost);
+			city.Iron.SpendResource(upgrade.IronCost);
+			city.Crop.SpendResource(upgrade.CropCost);
+
+			city.BuildQueue.Add(building, upgrade.UpgradeDuration / (decimal) TimeManager.Speed);
 		}
 
 		public async Task FinishUpgradeAsync(int? targetId, BuildingType buildingType)
@@ -25,21 +38,17 @@ namespace BrowserGame.Internal
 				ResourceField resource = await _context.ResourceFields.FindAsync(targetId);
 				UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(resource));
 
-				resource.ProductionPerHour = upgrade.ValueChangeInt;
-				FinishUpgradeAsync(resource, upgrade);
+				resource.Value += upgrade.ValueChangeInt;
+
+				FinishUpgrade(resource, upgrade);
 			}
 		}
 
-		private void FinishUpgradeAsync(IBuilding building, UpgradeInfo upgrade)
+		private static void FinishUpgrade(IBuilding building, UpgradeInfo upgrade)
 		{
 			building.CropUpkeep += upgrade.AdditionalCropUpkeep;
 			building.Level = upgrade.Level + 1;
 			building.IsUpgradeInProgress = false;
-		}
-
-		internal double BuildDuration(IBuilding building)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

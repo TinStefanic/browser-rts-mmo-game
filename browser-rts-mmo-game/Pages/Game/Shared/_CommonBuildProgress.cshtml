@@ -4,7 +4,7 @@
 }
 
 @if (await cityManager.IsBuildInProgressAsync()) {
-    <div>
+    <div class="text-center pt-5 text-info">
         Currently building level @cityManager.BuildTargetLevel @cityManager.BuildTargetName, building will complete at @(cityManager.CompletionTime).
     </div>
 } 

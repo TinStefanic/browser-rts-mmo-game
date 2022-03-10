@@ -1,0 +1,62 @@
+﻿@page "{id:int?}"
+@using BrowserGame.Internal
+@using BrowserGame.Models
+@using BrowserGame.Static
+@model BrowserGame.Pages.Game.InnerCityModel
+
+@{
+    var cityManager = (CityManager)ViewData["CityManager"];
+    var aspPageUpgrade = "/Game/UpgradeCityBuilding";
+    var aspPageBuildNew = "/Game/NewCityBuilding";
+
+    var getAspPage = (CityBuilding cb) => cb.CityBuildingType == CityBuildingType.EmptySlot ? aspPageBuildNew : aspPageUpgrade;
+    var getColor = (CityBuilding cb) => cb.CityBuildingType == CityBuildingType.EmptySlot ? HtmlColors.EmptySlot : HtmlColors.BuildingSlotBuilding;
+}
+
+<partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
+
+<div class="row text-center justify-content-center">
+    <div class="col-12 mt-2 mb-2">
+        <div class="row justify-content-center">
+            <div class="col-8 text-@HtmlColors.MainBuilding border border-@HtmlColors.MainBuilding">
+                <a class="text-@HtmlColors.MainBuilding" asp-area="" asp-page="@getAspPage(cityManager.MainBuilding)" asp-route-id="@cityManager.MainBuilding.Id">
+                    <div><h3>@cityManager.MainBuilding.CityBuildingType.ToDisplayName()</h3></div>
+                    <div>
+                        <h4>@cityManager.MainBuilding.Level</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @foreach(CityBuilding building in cityManager.BuildingSlots)
+    {
+        <div class="col-6 col-md-3 mt-2">
+            <div class="row justify-content-center">
+                <div class="col-8 text-@getColor(building) border border-@getColor(building)">
+                    <a class="text-@getColor(building)" asp-area="" asp-page="@getAspPage(building)" asp-route-id="@building.Id">
+                        <div><h3>@building.CityBuildingType.ToDisplayName()</h3></div>
+                        <div>
+                             <h4>@building.Level</h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col-12 mt-4">
+        <div class="row justify-content-center">
+            <div class="col-8 text-@HtmlColors.Wall border border-@HtmlColors.Wall">
+                <a class="text-@HtmlColors.Wall" asp-area="" asp-page="@getAspPage(cityManager.Wall)" asp-route-id="@cityManager.Wall.Id">
+                    <div><h3>@cityManager.Wall.CityBuildingType.ToDisplayName()</h3></div>
+                    <div>
+                        <h4>@cityManager.Wall.Level</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="./Shared/_CommonBuildProgress" view-data="ViewData"/>

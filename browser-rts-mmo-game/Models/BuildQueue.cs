@@ -29,7 +29,7 @@ namespace BrowserGame.Models
 			{
 				if (CompletionTime == null) return BuildQueueStatus.Empty;
 
-				if (CompletionTime >= DateTime.Now) return BuildQueueStatus.Finished;
+				if (DateTime.Now >= CompletionTime) return BuildQueueStatus.Finished;
 
 				return BuildQueueStatus.InProgress;
 			}
@@ -46,14 +46,14 @@ namespace BrowserGame.Models
 			CompletionTime = null;
 		}
 
-		public void Add(IBuilding building, BuildingType buildingType, decimal buildDuration)
+		public void Add(IBuilding building, decimal buildDuration)
 		{
 			TargetId = building.Id;
 			TargetName = building.Name;
-			TargetLevel = building.Level;
+			TargetLevel = building.Level + 1;
 
 			CompletionTime = DateTime.Now.AddSeconds((double)buildDuration);
-			BuildingType = buildingType;
+			BuildingType = building.BuildingType;
 		}
 	}
 

@@ -68,11 +68,13 @@ namespace BrowserGame.Pages.Game
             AddResources(newCity);
 
             _context.BuildQueues.Add(newCity.BuildQueue);
+            _context.BuildingSlots.Add(newCity.BuildingSlot);
+            _context.CityBuildings.AddRange(newCity.BuildingSlot.CityBuildings);
 
             newPlayer.Capital = newCity;
             await _context.SaveChangesAsync();
 
-            return Redirect($"Game/OuterCity/{newCity.Id}");
+            return Redirect($"/Game/OuterCity/{newCity.Id}");
         }
 
         private void AddResources(City newCity)

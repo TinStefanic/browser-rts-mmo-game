@@ -24,10 +24,13 @@ namespace BrowserGame.Models
 
 		public virtual Crop Crop { get; set; } = new Crop(6);
 
+		public virtual BuildingSlot BuildingSlot { get; set; }
+
 		public virtual BuildQueue BuildQueue { get; set; }
 		public City()
 		{
 			BuildQueue = new BuildQueue(this);
+			BuildingSlot = new BuildingSlot(this);
 		}
 	}
 }

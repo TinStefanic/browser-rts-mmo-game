@@ -7,6 +7,10 @@ using System.Security.Claims;
 
 namespace BrowserGame.Internal
 {
+	/// <summary>
+	/// Class that provides interface to extract information from city and modify it.
+	/// Upon modification it updates the database.
+	/// </summary>
 	internal class CityManager
 	{
 		public int Id => _city.Id;
@@ -15,14 +19,21 @@ namespace BrowserGame.Internal
 		public Iron Iron => _city.Iron;
 		public Wood Wood => _city.Wood;
 		public Crop Crop => _city.Crop;
+		public int ClayPerHour => _city.Clay.ProductionPerHour * TimeManager.Speed;
+		public int IronPerHour => _city.Iron.ProductionPerHour * TimeManager.Speed;
+		public int WoodPerHour => _city.Wood.ProductionPerHour * TimeManager.Speed;
+		public int CropPerHour => _city.Crop.ProductionPerHour * TimeManager.Speed;
 		/// <summary>
 		///  Null if BuildQueue is empty.
 		/// </summary>
 		public string CompletionTime => _city.BuildQueue.CompletionTime?.ToString();
 		public string BuildTargetName => _city.BuildQueue.TargetName;
 		public int? BuildTargetLevel => _city.BuildQueue.TargetLevel;
-
-		private decimal BuildingSpeed => 1.0M;
+		public IList<CityBuilding> BuildingSlots => _city.BuildingSlot.CityBuildings.ToList()
+													.GetRange(BuildingSlot.NumSpecialBuildings, BuildingSlot.NumBuildingSlots);
+		public CityBuilding MainBuilding => _city.BuildingSlot.CityBuildings[0];
+		public CityBuilding Wall => _city.BuildingSlot.CityBuildings[1];
+		private decimal BuildingSpeed => MainBuilding.Value;
 
 		private readonly City _city;
 		private readonly ApplicationDbContext _context;
@@ -40,6 +51,8 @@ namespace BrowserGame.Internal
 											.Include(c => c.Iron.Fields)
 											.Include(c => c.Crop.Fields)
 											.Include(c => c.Player)
+											.Include(c => c.BuildQueue)
+											.Include(c => c.BuildingSlot.CityBuildings)
 											.FirstOrDefaultAsync(m => m.Id == cityId);
 
 			var cityManager = new CityManager(city, context);
@@ -51,18 +64,17 @@ namespace BrowserGame.Internal
 
 		public async Task<bool> TryUpgradeAsync(IBuilding building)
 		{
+			var upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(building));
+
+			if (!await CanUpgradeAsync(upgrade)) return false;
+
 			var upgradeManager = new UpgradeManager(_context);
 
-			bool tryUpgradeResult = await upgradeManager.TryUpgradeAsync(building);
+			await upgradeManager.StartUpgradeAsync(building, _city);
 
-			if (tryUpgradeResult)
-			{
-				_city.BuildQueue.TargetLevel = building.Level + 1;
-				_city.BuildQueue.TargetName = building.Name;
-				_city.BuildQueue.CompletionTime = DateTime.Now.AddSeconds((double)upgradeManager.BuildDuration(building));
-			}
+			await _context.SaveChangesAsync();
 
-			return tryUpgradeResult;
+			return true;
 		}
 
 		public bool NotUsers(ClaimsPrincipal user)
@@ -106,6 +118,7 @@ namespace BrowserGame.Internal
 				await upgradeManager.FinishUpgradeAsync(_city.BuildQueue.TargetId, _city.BuildQueue.BuildingType);
 
 				_city.BuildQueue.Clear();
+				await _context.SaveChangesAsync();
 			}
 		}
 	}

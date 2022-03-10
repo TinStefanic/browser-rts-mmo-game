@@ -49,6 +49,18 @@ namespace BrowserGame.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BuildSlots",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BuildSlots", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clays",
                 columns: table => new
                 {
@@ -124,7 +136,8 @@ namespace BrowserGame.Migrations
                     IsFinnalUpgrade = table.Column<bool>(type: "bit", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     AdditionalCropUpkeep = table.Column<int>(type: "int", nullable: false),
-                    ValueChange = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    UpgradeDuration = table.Column<int>(type: "int", nullable: false),
+                    ValueChangeDecimal = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -264,11 +277,17 @@ namespace BrowserGame.Migrations
                     ClayId = table.Column<int>(type: "int", nullable: true),
                     WoodId = table.Column<int>(type: "int", nullable: true),
                     IronId = table.Column<int>(type: "int", nullable: true),
-                    CropId = table.Column<int>(type: "int", nullable: true)
+                    CropId = table.Column<int>(type: "int", nullable: true),
+                    BuildingSlotId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cities_BuildSlots_BuildingSlotId",
+                        column: x => x.BuildingSlotId,
+                        principalTable: "BuildSlots",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Cities_Clays_ClayId",
                         column: x => x.ClayId,
@@ -298,15 +317,71 @@ namespace BrowserGame.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BuildQueues",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompletionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TargetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TargetId = table.Column<int>(type: "int", nullable: true),
+                    TargetLevel = table.Column<int>(type: "int", nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    BuildingType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BuildQueues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BuildQueues_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CityBuildings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    CropUpkeep = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: true),
+                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsUpgradeInProgress = table.Column<bool>(type: "bit", nullable: false),
+                    CityBuildingType = table.Column<int>(type: "int", nullable: false),
+                    BuildingSlotId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CityBuildings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CityBuildings_BuildSlots_BuildingSlotId",
+                        column: x => x.BuildingSlotId,
+                        principalTable: "BuildSlots",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CityBuildings_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ResourceFields",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductionPerHour = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     CropUpkeep = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: true),
+                    IsUpgradeInProgress = table.Column<bool>(type: "bit", nullable: false),
                     ClayId = table.Column<int>(type: "int", nullable: true),
                     CropId = table.Column<int>(type: "int", nullable: true),
                     IronId = table.Column<int>(type: "int", nullable: true),
@@ -315,6 +390,11 @@ namespace BrowserGame.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ResourceFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResourceFields_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ResourceFields_Clays_ClayId",
                         column: x => x.ClayId,
@@ -377,6 +457,17 @@ namespace BrowserGame.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BuildQueues_CityId",
+                table: "BuildQueues",
+                column: "CityId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cities_BuildingSlotId",
+                table: "Cities",
+                column: "BuildingSlotId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cities_ClayId",
                 table: "Cities",
                 column: "ClayId");
@@ -409,6 +500,16 @@ namespace BrowserGame.Migrations
                 column: "WoodId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CityBuildings_BuildingSlotId",
+                table: "CityBuildings",
+                column: "BuildingSlotId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CityBuildings_CityId",
+                table: "CityBuildings",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Players_Name",
                 table: "Players",
                 column: "Name",
@@ -420,6 +521,11 @@ namespace BrowserGame.Migrations
                 column: "UserId",
                 unique: true,
                 filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResourceFields_CityId",
+                table: "ResourceFields",
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResourceFields_ClayId",
@@ -460,7 +566,10 @@ namespace BrowserGame.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "BuildQueues");
+
+            migrationBuilder.DropTable(
+                name: "CityBuildings");
 
             migrationBuilder.DropTable(
                 name: "ResourceFields");
@@ -475,7 +584,10 @@ namespace BrowserGame.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Players");
+                name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "BuildSlots");
 
             migrationBuilder.DropTable(
                 name: "Clays");
@@ -485,6 +597,9 @@ namespace BrowserGame.Migrations
 
             migrationBuilder.DropTable(
                 name: "Irons");
+
+            migrationBuilder.DropTable(
+                name: "Players");
 
             migrationBuilder.DropTable(
                 name: "Woods");

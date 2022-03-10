@@ -1,0 +1,90 @@
+﻿@page "{id:int}"
+@using BrowserGame.Internal
+@model BrowserGame.Pages.Game.NewCityBuildingModel
+
+@{
+    var cityManager = (CityManager)ViewData["CityManager"];
+}
+
+<partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].BuildingName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].ClayCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].WoodCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].IronCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].CropCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].IsFinnalUpgrade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].Level)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].AdditionalCropUpkeep)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].UpgradeDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeInfo[0].ValueChangeDecimal)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.UpgradeInfo) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuildingName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClayCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WoodCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IronCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CropCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFinnalUpgrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdditionalCropUpkeep)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpgradeDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValueChangeDecimal)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<partial name="./Shared/_CommonBuildProgress" view-data="ViewData"/>

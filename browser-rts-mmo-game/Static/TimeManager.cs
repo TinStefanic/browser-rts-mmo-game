@@ -12,6 +12,9 @@ namespace BrowserGame.Static
 		/// <summary>
 		/// Returns current time in ticks and calculates time elapsed in hours.
 		/// </summary>
+		/// <returns>
+		/// Current time in ticks.
+		/// </returns>
 		public static long UpdateTime(long lastUpdate, out decimal elapsedHours)
 		{
 			long currentTime = Ticks;

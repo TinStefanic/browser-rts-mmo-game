@@ -17,7 +17,7 @@ namespace BrowserGame.Data
 
         private static async Task SeedResourceFieldUpgradesAsync(UpgradeSeeder upgradeSeeder)
         {
-            int r1 = 50, r2 = 35, r3 = 15, r4 = 20, r5 = 10;
+            int r1 = 50, r2 = 35, r3 = 15, r4 = 20;
             int production = 5, buildTime = 60;
 
             var upgradeSettings = new UpgradeSeederSettings
@@ -49,7 +49,7 @@ namespace BrowserGame.Data
                 Clay = r1,
                 Wood = r2,
                 Iron = r2,
-                Crop = r5,
+                Crop = r4,
                 Value = production,
                 BuildTime = buildTime,
                 BuildingName = "Wood"

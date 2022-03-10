@@ -6,7 +6,8 @@
 }
 
 <div class="row justify-content-around text-center">
-    <div class="col-3"><h3><a asp-area="" asp-page="Game/OuterCity">Outer City</a></h3></div>
+    <div class="col-3"><h3><a asp-area="" asp-page="/Game/OuterCity" asp-route-id="@cityManager.Id">Outer City</a></h3></div>
+    <div class="col-3"><h3><a asp-area="" asp-page="/Game/InnerCity" asp-route-id="@cityManager.Id">Inner City</a></h3></div>
 </div>
 
 <div class="text-center">
@@ -14,8 +15,8 @@
 </div>
 
 <div class="row justify-content-around text-center">
-    <div class="col-md-3 text-@HtmlColors.Clay"><h4>Clay @cityManager.Clay.Available/@cityManager.Clay.MaxCapacity, +@cityManager.Clay.ProductionPerHour</h4></div>
-    <div class="col-md-3 text-@HtmlColors.Iron"><h4>Iron @cityManager.Iron.Available/@cityManager.Iron.MaxCapacity, +@cityManager.Iron.ProductionPerHour</h4></div>
-    <div class="col-md-3 text-@HtmlColors.Wood"><h4>Wood @cityManager.Wood.Available/@cityManager.Wood.MaxCapacity, +@cityManager.Wood.ProductionPerHour</h4></div>
-    <div class="col-md-3 text-@HtmlColors.Crop"><h4>Crop @cityManager.Crop.Available/@cityManager.Crop.MaxCapacity, +@cityManager.Crop.ProductionPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Clay"><h4>Clay @cityManager.Clay.AvailableInt/@cityManager.Clay.MaxCapacity, +@cityManager.ClayPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Iron"><h4>Iron @cityManager.Iron.AvailableInt/@cityManager.Iron.MaxCapacity, +@cityManager.IronPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Wood"><h4>Wood @cityManager.Wood.AvailableInt/@cityManager.Wood.MaxCapacity, +@cityManager.WoodPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Crop"><h4>Crop @cityManager.Crop.AvailableInt/@cityManager.Crop.MaxCapacity, +@cityManager.CropPerHour</h4></div>
 </div>

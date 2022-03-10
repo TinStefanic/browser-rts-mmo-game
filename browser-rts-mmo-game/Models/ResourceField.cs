@@ -1,4 +1,5 @@
 ﻿using BrowserGame.Models.Misc;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BrowserGame.Models
 {
@@ -8,7 +9,11 @@ namespace BrowserGame.Models
 
 		public string Name { get; set; }
 
-		public int ProductionPerHour { get; set; } = 5;
+		[NotMapped]
+		public int ProductionPerHour => Convert.ToInt32(Value);
+
+		[Column(TypeName = "decimal(18, 2)")]
+		public decimal Value { get; set; } = 5;
 
 		public int Level { get; set; } = 0;
 
@@ -18,6 +23,7 @@ namespace BrowserGame.Models
 		public virtual City City { get; set; }
 
 		public bool IsUpgradeInProgress { get; set; } = false;
+		[NotMapped]
 		public BuildingType BuildingType => BuildingType.Resource;
 	}
 }

@@ -2,11 +2,11 @@
 @using BrowserGame.Models
 @using BrowserGame.Internal
 @using BrowserGame.Static
-@model BrowserGame.Pages.Game.UpgradeFieldModel
+@model BrowserGame.Pages.Game.UpgradeCityBuildingModel
 
 @{
     var cityManager = (CityManager)ViewData["CityManager"];
-    var resourceField = (ResourceField)ViewData["ResourceField"];
+    var cityBuilding = (CityBuilding)ViewData["CityBuilding"];
     var upgrade = (UpgradeInfo)ViewData["UpgradeInfo"];
 
     var span = TimeSpan.FromSeconds(cityManager.GetBuildTime(upgrade));
@@ -25,8 +25,8 @@
 else
 {
     <div class="text-center">
-        <div><h2>@resourceField.Name lvl. @resourceField.Level</h2></div>
-        @if (resourceField.IsUpgradeInProgress) {
+        <div><h2>@cityBuilding.Name lvl. @cityBuilding.Level</h2></div>
+        @if (cityBuilding.IsUpgradeInProgress) {
             <div>Upgrade in progress.</div>
         }
         else
@@ -42,8 +42,8 @@ else
           Additional crop upkeep @upgrade.AdditionalCropUpkeep
         </div>
         <div>
-            Current production: <span class="text-info">@resourceField.ProductionPerHour</span>
-            production after upgrade: <span class="text-info">@(upgrade.ValueChangeInt + resourceField.ProductionPerHour)</span>.
+            Current value: <span class="text-info">@cityBuilding.Value</span>,
+            Value after upgrade: <span class="text-info">@(upgrade.ValueChangeDecimal + cityBuilding.Value)</span>.
         </div>
         <div>
         Build time: @span.Days day@(span.Days == 1 ? "" : "s"), @span.Hours hour@(span.Hours == 1 ? "" : "s"),
@@ -51,7 +51,7 @@ else
         </div>
          <form method="post">
             <div class="form-group">
-                <input type="hidden" name="FieldId" value="@resourceField.Id" />
+                <input type="hidden" name="cityBuildingId" value="@cityBuilding.Id" />
                 <input type="submit" value="Upgrade" class="btn btn-primary" @postButtonDisabled />
             </div>
         </form>

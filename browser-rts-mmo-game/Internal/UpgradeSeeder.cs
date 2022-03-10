@@ -6,7 +6,7 @@ namespace BrowserGame.Internal
 {
     internal class UpgradeSeeder
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public UpgradeSeeder(ApplicationDbContext context)
         {

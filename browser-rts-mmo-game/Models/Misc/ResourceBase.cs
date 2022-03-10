@@ -38,6 +38,9 @@ namespace BrowserGame.Models.Misc
 			protected set => _available = value;
 		}
 
+		[NotMapped]
+		public int AvailableInt => Convert.ToInt32(GetAvailable());
+
 		public void SpendResource(int amount)
 		{
 			_available = Available - amount;
@@ -60,8 +63,13 @@ namespace BrowserGame.Models.Misc
 		{
 			LastUpdate = TimeManager.UpdateTime(LastUpdate, out decimal elapsedHours);
 
-			_available = Math.Min(elapsedHours * ProductionPerHour, MaxCapacity);
+			_available = Math.Min(_available + elapsedHours * ProductionPerHour, MaxCapacity);
 			return _available;
+		}
+
+		public int GetAvailableInt()
+		{
+			return Convert.ToInt32(GetAvailable());
 		}
 	}
 }

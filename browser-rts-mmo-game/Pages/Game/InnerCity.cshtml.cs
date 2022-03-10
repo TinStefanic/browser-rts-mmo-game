@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.Static;
 using BrowserGame.Internal;
+using BrowserGame.Static;
 
 namespace BrowserGame.Pages.Game
 {
-    public class OuterCityModel : PageModel
+    public class InnerCityModel : PageModel
     {
         private readonly ApplicationDbContext _context;
 
-        public OuterCityModel(ApplicationDbContext context)
+        public InnerCityModel(ApplicationDbContext context)
         {
             _context = context;
         }

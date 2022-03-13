@@ -16,19 +16,23 @@ namespace BrowserGame.Models
 		[Required, StringLength(50, MinimumLength = 3)]
 		public string Name { get; set; }
 
-		public virtual Clay Clay { get; set; } = new Clay(4);
+		public virtual Clay Clay { get; set; }
 
-		public virtual Wood Wood { get; set; } = new Wood(4);
+		public virtual Wood Wood { get; set; }
 
-		public virtual Iron Iron { get; set; } = new Iron(4);
+		public virtual Iron Iron { get; set; }
 
-		public virtual Crop Crop { get; set; } = new Crop(6);
+		public virtual Crop Crop { get; set; }
 
 		public virtual BuildingSlot BuildingSlot { get; set; }
 
 		public virtual BuildQueue BuildQueue { get; set; }
 		public City()
 		{
+			Clay = new Clay(4, this);
+			Wood = new Wood(4, this);
+			Iron = new Iron(4, this);
+			Crop = new Crop(6, this);
 			BuildQueue = new BuildQueue(this);
 			BuildingSlot = new BuildingSlot(this);
 		}

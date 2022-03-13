@@ -21,25 +21,21 @@ namespace BrowserGame.Pages.Game
             _context = context;
         }
 
-        public CityBuilding CityBuilding { get; set; }
-        public UpgradeInfo UpgradeInfo { get; set; }
-
-        internal CityManager CityManager { get; set; }
-
         [BindProperty]
         public int FieldId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            CityBuilding = await _context.CityBuildings.Include(cb => cb.City.Player).FirstOrDefaultAsync(cb => cb.Id == id);
-            UpgradeInfo = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(CityBuilding));
+            CityBuilding cityBuilding = await _context.CityBuildings.Include(cb => cb.City.Player).FirstOrDefaultAsync(cb => cb.Id == id);
+            UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(cityBuilding.GetUpgradeInfoId());
 
-            CityManager = await CityManager.LoadCityManagerAsync((int)CityBuilding.City.Id, _context);
-            ViewData["CityManager"] = CityManager;
-            ViewData["CityBuilding"] = CityBuilding;
-            ViewData["UpgradeInfo"] = UpgradeInfo;
+			CityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 
-            if (CityManager.NotUsers(User))
+            ViewData["CityManager"] = cityManager;
+            ViewData["CityBuilding"] = cityBuilding;
+            ViewData["UpgradeInfo"] = upgradeInfo;
+
+            if (cityManager.NotUsers(User))
                 return NotFound();
 
             FieldId = id;
@@ -49,17 +45,17 @@ namespace BrowserGame.Pages.Game
 
         public async Task<IActionResult> OnPostAsync()
         {
-            CityBuilding = await _context.CityBuildings
+            CityBuilding cityBuilding = await _context.CityBuildings
                                           .Include(cb => cb.City)
                                           .FirstOrDefaultAsync(cb => cb.Id == FieldId);
 
-            CityManager = await CityManager.LoadCityManagerAsync(CityBuilding.City.Id, _context);
+            CityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 
-            if (CityManager.NotUsers(User))
+            if (cityManager.NotUsers(User))
                 return NotFound();
 
-            if (await CityManager.TryUpgradeAsync(CityBuilding))
-                return Redirect($"/Game/InnerCity/{CityManager.Id}");
+            if (await cityManager.TryUpgradeAsync(cityBuilding))
+                return Redirect($"/Game/InnerCity/{cityManager.Id}");
             else
                 return Page();
         }

@@ -17,25 +17,20 @@ namespace BrowserGame.Pages.Game
             _context = context;
         }
 
-        public ResourceField ResourceField { get; set; }
-        public UpgradeInfo UpgradeInfo { get; set; }
-
-        internal CityManager CityManager { get; set; }
-
         [BindProperty]
         public int FieldId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            ResourceField = await _context.ResourceFields.Include(rf => rf.City.Player).FirstOrDefaultAsync(rf => rf.Id == id);
-            UpgradeInfo = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(ResourceField.Name, ResourceField.Level));
+            ResourceField resourceField = await _context.ResourceFields.Include(rf => rf.City.Player).FirstOrDefaultAsync(rf => rf.Id == id);
+            UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(resourceField.GetUpgradeInfoId());
 
-            CityManager = await CityManager.LoadCityManagerAsync(ResourceField.City.Id, _context);
-            ViewData["CityManager"] = CityManager;
-            ViewData["ResourceField"] = ResourceField;
-            ViewData["UpgradeInfo"] = UpgradeInfo;
+            CityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
+            ViewData["CityManager"] = cityManager;
+            ViewData["ResourceField"] = resourceField;
+            ViewData["UpgradeInfo"] = upgradeInfo;
 
-            if (CityManager.NotUsers(User))
+            if (cityManager.NotUsers(User))
                 return NotFound();
 
             FieldId = id;
@@ -45,17 +40,17 @@ namespace BrowserGame.Pages.Game
 
         public async Task<IActionResult> OnPostAsync()
 		{
-            ResourceField = await _context.ResourceFields
+            ResourceField resourceField = await _context.ResourceFields
                                           .Include(rf => rf.City)
                                           .FirstOrDefaultAsync(rf => rf.Id == FieldId);
 
-            CityManager = await CityManager.LoadCityManagerAsync(ResourceField.City.Id, _context);
+            CityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
 
-            if (CityManager.NotUsers(User))
+            if (cityManager.NotUsers(User))
                 return NotFound();
 
-            if (await CityManager.TryUpgradeAsync(ResourceField))
-                return Redirect($"/Game/OuterCity/{CityManager.Id}");
+            if (await cityManager.TryUpgradeAsync(resourceField))
+                return Redirect($"/Game/OuterCity/{cityManager.Id}");
             else
                 return Page();
         }

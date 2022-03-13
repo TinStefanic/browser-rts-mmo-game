@@ -46,13 +46,18 @@ namespace BrowserGame.Models.Misc
 			_available = Available - amount;
 		}
 
-		protected void InitFieldsList(int numFields, string type)
+		public int GetAvailableInt()
+		{
+			return Convert.ToInt32(GetAvailable());
+		}
+
+		protected void InitFieldsList(int numFields, string type, City city)
 		{
 			Fields = new List<ResourceField>();
 
 			for (int i = 0; i < numFields; ++i)
 			{
-				Fields.Add(new ResourceField()
+				Fields.Add(new ResourceField(city)
 				{
 					Name = type
 				});
@@ -65,11 +70,6 @@ namespace BrowserGame.Models.Misc
 
 			_available = Math.Min(_available + elapsedHours * ProductionPerHour, MaxCapacity);
 			return _available;
-		}
-
-		public int GetAvailableInt()
-		{
-			return Convert.ToInt32(GetAvailable());
 		}
 	}
 }

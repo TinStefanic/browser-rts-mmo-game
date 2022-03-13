@@ -14,15 +14,21 @@ namespace BrowserGame.Pages.Game
     public class NewCityBuildingModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private CityManager _cityManager;
 
         public NewCityBuildingModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        internal CityManager CityManager { get; set; }
+        public CityBuilding CityBuilding { get; set; }
 
         public IList<UpgradeInfo> UpgradeInfo { get; set; }
+
+        [BindProperty]
+        public int CityBuildingId { get; set; }
+        [BindProperty]
+        public CityBuildingType CityBuildingType { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -30,11 +36,28 @@ namespace BrowserGame.Pages.Game
 
             if (cityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
 
-            CityManager = await CityManager.LoadCityManagerAsync(cityBuilding.CityId ?? 0, _context);
+            _cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.CityId ?? 0, _context);
 
-            ViewData["CityManager"] = CityManager;
+            ViewData["CityManager"] = _cityManager;
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            CityBuilding = await _context.CityBuildings
+                                          .Include(cb => cb.City)
+                                          .FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
+
+            _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding.City.Id, _context);
+
+            if (_cityManager.NotUsers(User))
+                return NotFound();
+
+            if (await _cityManager.TryCreateBuildingAsync(CityBuilding, CityBuildingType))
+                return Redirect($"/Game/InnerCity/{_cityManager.Id}");
+            else
+                return Page();
         }
     }
 }

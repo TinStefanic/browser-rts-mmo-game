@@ -4,12 +4,12 @@ namespace BrowserGame.Models
 {
 	public class Clay : ResourceBase
 	{
-		public override string Type { get; protected set; } = "Clay";
+		public override string Type { get; protected set; } = typeof(Clay).Name;
 
 		public Clay() { }
-		public Clay(int numFields)
+		public Clay(int numFields, City city)
 		{
-			InitFieldsList(numFields, Type);
+			InitFieldsList(numFields, Type, city);
 		}
 	}
 }

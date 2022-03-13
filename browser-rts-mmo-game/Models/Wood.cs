@@ -4,12 +4,12 @@ namespace BrowserGame.Models
 {
 	public class Wood : ResourceBase
 	{
-		public override string Type { get; protected set; } = "Wood";
+		public override string Type { get; protected set; } = typeof(Wood).ToString();
 
 		public Wood() { }
-		public Wood(int numFields)
+		public Wood(int numFields, City city)
 		{
-			InitFieldsList(numFields, Type);
+			InitFieldsList(numFields, Type, city);
 		}
 	}
 }

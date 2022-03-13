@@ -62,6 +62,14 @@ namespace BrowserGame.Internal
 			return cityManager;
 		}
 
+		/// <summary>
+		/// If building cannot be built returns false, otherwise true.
+		/// </summary>
+		public async Task<bool> TryCreateBuildingAsync(CityBuilding cityBuilding, CityBuildingType cityBuildingType)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<bool> TryUpgradeAsync(IBuilding building)
 		{
 			var upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(building));
@@ -79,7 +87,7 @@ namespace BrowserGame.Internal
 
 		public bool NotUsers(ClaimsPrincipal user)
 		{
-			return _city.Player.UserId != GameSession.GetUserId(user);
+			return _city?.Player?.UserId != user.GetUserId();
 		}
 
 		public async Task<bool> IsBuildInProgressAsync()

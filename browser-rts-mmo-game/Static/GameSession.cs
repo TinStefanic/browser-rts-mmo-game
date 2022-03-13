@@ -6,7 +6,7 @@ namespace BrowserGame.Static
 {
 	public static class GameSession
 	{
-		public static string GetUserId(ClaimsPrincipal user)
+		public static string GetUserId(this ClaimsPrincipal user)
 		{
 			return user.FindFirst(ClaimTypes.NameIdentifier).Value;
 		}
@@ -15,7 +15,7 @@ namespace BrowserGame.Static
 		{
 			return buildingName + "#" + level.ToString();
 		}
-		public static string GetUpgradeInfoId(IBuilding building)
+		public static string GetUpgradeInfoId(this IBuilding building)
 		{
 			return GetUpgradeInfoId(building.Name, building.Level);
 		}

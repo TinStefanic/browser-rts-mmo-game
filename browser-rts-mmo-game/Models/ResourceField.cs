@@ -25,5 +25,12 @@ namespace BrowserGame.Models
 		public bool IsUpgradeInProgress { get; set; } = false;
 		[NotMapped]
 		public BuildingType BuildingType => BuildingType.Resource;
+
+		public ResourceField() { }
+		
+		public ResourceField(City city)
+		{
+			City = city;
+		}
 	}
 }

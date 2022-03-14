@@ -19,7 +19,7 @@ namespace BrowserGame.Internal
 
 		public async Task StartUpgradeAsync(IBuilding building, City city)
 		{
-			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(building));
+			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(building.GetUpgradeInfoId());
 			
 			building.IsUpgradeInProgress = true;
 
@@ -36,7 +36,7 @@ namespace BrowserGame.Internal
 			if (buildingType == BuildingType.Resource)
 			{
 				ResourceField resource = await _context.ResourceFields.FindAsync(targetId);
-				UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(resource));
+				UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(resource.GetUpgradeInfoId());
 
 				resource.Value += upgrade.ValueChangeInt;
 

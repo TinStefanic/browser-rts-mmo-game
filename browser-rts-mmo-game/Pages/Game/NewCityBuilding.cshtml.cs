@@ -19,35 +19,34 @@ namespace BrowserGame.Pages.Game
         public NewCityBuildingModel(ApplicationDbContext context)
         {
             _context = context;
+            BuildingInfoFactory = new BuildingInfoFactory(_context);
         }
 
         public CityBuilding CityBuilding { get; set; }
-
-        public IList<UpgradeInfo> UpgradeInfo { get; set; }
-
-        [BindProperty]
-        public int CityBuildingId { get; set; }
         [BindProperty]
         public CityBuildingType CityBuildingType { get; set; }
+        public IEnumerable<CityBuildingType> AvailableCityBuildings { get; set; }
+
+        internal BuildingInfoFactory BuildingInfoFactory { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            CityBuilding cityBuilding = await _context.CityBuildings.FirstOrDefaultAsync(cb => cb.Id == id);
+            CityBuilding = await _context.CityBuildings.FirstOrDefaultAsync(cb => cb.Id == id);
 
-            if (cityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
+            if (CityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
 
-            _cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.CityId ?? 0, _context);
+            _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding.CityId ?? 0, _context);
 
             ViewData["CityManager"] = _cityManager;
+
+            AvailableCityBuildings = new AvailableCityBuildingsManager(_cityManager).AvailableBuildings;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            CityBuilding = await _context.CityBuildings
-                                          .Include(cb => cb.City)
-                                          .FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
+            if (CityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
 
             _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding.City.Id, _context);
 

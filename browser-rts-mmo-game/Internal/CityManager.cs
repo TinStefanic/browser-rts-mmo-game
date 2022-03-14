@@ -67,12 +67,21 @@ namespace BrowserGame.Internal
 		/// </summary>
 		public async Task<bool> TryCreateBuildingAsync(CityBuilding cityBuilding, CityBuildingType cityBuildingType)
 		{
-			throw new NotImplementedException();
+			if (new AvailableCityBuildingsManager(this).IsAvailable(cityBuildingType))
+			{
+				cityBuilding.CityBuildingType = cityBuildingType;
+
+				return await TryUpgradeAsync(cityBuilding);
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public async Task<bool> TryUpgradeAsync(IBuilding building)
 		{
-			var upgrade = await _context.UpgradeInfos.FindAsync(GameSession.GetUpgradeInfoId(building));
+			var upgrade = await _context.UpgradeInfos.FindAsync(building.GetUpgradeInfoId());
 
 			if (!await CanUpgradeAsync(upgrade)) return false;
 

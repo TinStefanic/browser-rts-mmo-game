@@ -6,7 +6,8 @@ namespace BrowserGame.Models
 	public class CityBuilding : IBuilding
 	{
 		public int Id { get; set; }
-		public string Name { get; set; }
+		[NotMapped]
+		public string Name => CityBuildingType.ToString();
 		public int Level { get; set; } = 0;
 		public int CropUpkeep { get; set; } = 0;
 		public int? CityId { get; set; }
@@ -25,14 +26,12 @@ namespace BrowserGame.Models
 		{
 			City = city;
 			CityBuildingType = CityBuildingType.EmptySlot;
-			Name = CityBuildingType.ToString();
 		}
 
 		public CityBuilding(City city, CityBuildingType cityBuildingName, decimal value = 0m)
 		{
 			City = city;
 			CityBuildingType = cityBuildingName;
-			Name = cityBuildingName.ToString();
 			Value = value;
 		}
 	}

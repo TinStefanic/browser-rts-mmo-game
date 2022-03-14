@@ -19,5 +19,10 @@ namespace BrowserGame.Static
 		{
 			return GetUpgradeInfoId(building.Name, building.Level);
 		}
+
+		public static string GetUpgradeInfoId(this CityBuildingType cityBuildingType)
+		{
+			return GetUpgradeInfoId(cityBuildingType.ToString(), 0);
+		}
 	}
 }

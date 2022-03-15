@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.Internal;
+using BrowserGame.ModelUtils;
 
 namespace BrowserGame.Pages.Game
 {
     public class NewCityBuildingModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private CityManager _cityManager;
+        private ICityManager _cityManager;
 
         public NewCityBuildingModel(ApplicationDbContext context)
         {
@@ -27,7 +27,7 @@ namespace BrowserGame.Pages.Game
         public CityBuildingType CityBuildingType { get; set; }
         public IEnumerable<CityBuildingType> AvailableCityBuildings { get; set; }
 
-        internal BuildingInfoFactory BuildingInfoFactory { get; set; }
+        public IBuildingInfoFactory BuildingInfoFactory { get; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {

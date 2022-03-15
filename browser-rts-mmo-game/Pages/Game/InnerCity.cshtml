@@ -1,11 +1,11 @@
 ﻿@page "{id:int?}"
-@using BrowserGame.Internal
+@using BrowserGame.ModelUtils
 @using BrowserGame.Models
 @using BrowserGame.Static
 @model BrowserGame.Pages.Game.InnerCityModel
 
 @{
-    var cityManager = (CityManager)ViewData["CityManager"];
+    var cityManager = (ICityManager)ViewData["CityManager"];
     var aspPageUpgrade = "/Game/UpgradeCityBuilding";
     var aspPageBuildNew = "/Game/NewCityBuilding";
 

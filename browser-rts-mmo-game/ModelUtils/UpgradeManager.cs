@@ -3,12 +3,12 @@ using BrowserGame.Models;
 using BrowserGame.Models.Misc;
 using BrowserGame.Static;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.ModelUtils
 {
 	/// <summary>
 	/// Doesn't call save changes on context.
 	/// </summary>
-	internal class UpgradeManager
+	public class UpgradeManager : IUpgradeManager
 	{
 		private readonly ApplicationDbContext _context;
 
@@ -20,7 +20,7 @@ namespace BrowserGame.Internal
 		public async Task StartUpgradeAsync(IBuilding building, City city)
 		{
 			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(building.GetUpgradeInfoId());
-			
+
 			building.IsUpgradeInProgress = true;
 
 			city.Clay.SpendResource(upgrade.ClayCost);
@@ -28,7 +28,7 @@ namespace BrowserGame.Internal
 			city.Iron.SpendResource(upgrade.IronCost);
 			city.Crop.SpendResource(upgrade.CropCost);
 
-			city.BuildQueue.Add(building, upgrade.UpgradeDuration / (decimal) TimeManager.Speed);
+			city.BuildQueue.Add(building, upgrade.UpgradeDuration / (decimal)TimeManager.Speed);
 		}
 
 		public async Task FinishUpgradeAsync(int? targetId, BuildingType buildingType)

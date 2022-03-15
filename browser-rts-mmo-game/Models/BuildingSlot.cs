@@ -5,7 +5,9 @@ namespace BrowserGame.Models
 	public class BuildingSlot
 	{
 		[NotMapped]
-		public static int NumSpecialBuildings => 2;
+		public static int NumSpecialBuildingSlots => 2;
+		[NotMapped]
+		public static int NumSpecialBuildings => 3;
 		[NotMapped]
 		public static int NumBuildingSlots => 16;
 

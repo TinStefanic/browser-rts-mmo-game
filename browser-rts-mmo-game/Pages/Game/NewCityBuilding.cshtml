@@ -1,11 +1,11 @@
 ﻿@page "{id:int}"
-@using BrowserGame.Internal
+@using BrowserGame.ModelUtils
 @using BrowserGame.Models
 @using BrowserGame.Static
 @model BrowserGame.Pages.Game.NewCityBuildingModel
 
 @{
-    var cityManager = (CityManager)ViewData["CityManager"];
+    var cityManager = (ICityManager)ViewData["CityManager"];
 }
 
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />

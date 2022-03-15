@@ -5,13 +5,13 @@ using BrowserGame.Static;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.ModelUtils
 {
 	/// <summary>
 	/// Class that provides interface to extract information from city and modify it.
 	/// Upon modification it updates the database.
 	/// </summary>
-	internal class CityManager
+	public class CityManager : ICityManager
 	{
 		public int Id => _city.Id;
 		public string Name => _city.Name;
@@ -30,7 +30,7 @@ namespace BrowserGame.Internal
 		public string BuildTargetName => _city.BuildQueue.TargetName;
 		public int? BuildTargetLevel => _city.BuildQueue.TargetLevel;
 		public IList<CityBuilding> BuildingSlots => _city.BuildingSlot.CityBuildings.ToList()
-													.GetRange(BuildingSlot.NumSpecialBuildings, BuildingSlot.NumBuildingSlots);
+													.GetRange(BuildingSlot.NumSpecialBuildingSlots, BuildingSlot.NumBuildingSlots);
 		public CityBuilding MainBuilding => _city.BuildingSlot.CityBuildings[0];
 		public CityBuilding Wall => _city.BuildingSlot.CityBuildings[1];
 		private decimal BuildingSpeed => MainBuilding.Value;
@@ -44,7 +44,7 @@ namespace BrowserGame.Internal
 			_context = context;
 		}
 
-		public static async Task<CityManager> LoadCityManagerAsync(int cityId, ApplicationDbContext context)
+		public static async Task<ICityManager> LoadCityManagerAsync(int cityId, ApplicationDbContext context)
 		{
 			City city = await context.Cities.Include(c => c.Clay.Fields)
 											.Include(c => c.Wood.Fields)

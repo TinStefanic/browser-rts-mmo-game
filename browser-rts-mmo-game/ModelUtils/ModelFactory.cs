@@ -1,9 +1,9 @@
 ﻿using BrowserGame.Data;
 using BrowserGame.Models;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.ModelUtils
 {
-	internal class ModelFactory : IModelFactory
+	public class ModelFactory : IModelFactory
 	{
 		private readonly ApplicationDbContext _context;
 

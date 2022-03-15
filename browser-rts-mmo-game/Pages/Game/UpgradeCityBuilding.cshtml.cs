@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.Internal;
+using BrowserGame.ModelUtils;
 using BrowserGame.Static;
 
 namespace BrowserGame.Pages.Game
@@ -29,7 +29,7 @@ namespace BrowserGame.Pages.Game
             CityBuilding cityBuilding = await _context.CityBuildings.Include(cb => cb.City.Player).FirstOrDefaultAsync(cb => cb.Id == id);
             UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(cityBuilding.GetUpgradeInfoId());
 
-			CityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
+			ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 
             ViewData["CityManager"] = cityManager;
             ViewData["CityBuilding"] = cityBuilding;
@@ -49,7 +49,7 @@ namespace BrowserGame.Pages.Game
                                           .Include(cb => cb.City)
                                           .FirstOrDefaultAsync(cb => cb.Id == FieldId);
 
-            CityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
+            ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 
             if (cityManager.NotUsers(User))
                 return NotFound();

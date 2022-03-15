@@ -1,6 +1,6 @@
-﻿@using BrowserGame.Internal
+﻿@using BrowserGame.ModelUtils
 @{
-    var cityManager = (CityManager)ViewData["CityManager"];
+    var cityManager = (ICityManager)ViewData["CityManager"];
 }
 
 @if (await cityManager.IsBuildInProgressAsync()) {

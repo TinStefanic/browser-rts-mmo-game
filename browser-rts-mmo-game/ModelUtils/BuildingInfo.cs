@@ -2,9 +2,9 @@
 using BrowserGame.Models;
 using BrowserGame.Static;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.ModelUtils
 {
-	internal class BuildingInfo
+	public class BuildingInfo : IBuildingInfo
 	{
 		public string BuildingName => _cityBuildingType.ToDisplayName();
 		public int ClayCost => _upgradeInfo.ClayCost;
@@ -21,12 +21,12 @@ namespace BrowserGame.Internal
 			_upgradeInfo = upgradeInfo;
 		}
 
-		public TimeSpan GetBuildDuration(CityManager cityManager)
+		public TimeSpan GetBuildDuration(ICityManager cityManager)
 		{
 			return TimeSpan.FromSeconds(cityManager.GetBuildTime(_upgradeInfo));
 		}
 
-		public async Task<bool> CanBeBuiltAsync(CityManager cityManager)
+		public async Task<bool> CanBeBuiltAsync(ICityManager cityManager)
 		{
 			return await cityManager.CanUpgradeAsync(_upgradeInfo);
 		}

@@ -36,10 +36,13 @@ namespace BrowserGame.Models
 		}
 	}
 
+	// Special buildings should be listed first.
 	public enum CityBuildingType
 	{
 		MainBuilding,
 		Wall,
-		EmptySlot
+		EmptySlot,
+		Warehouse,
+		Granary
 	}
 }

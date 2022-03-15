@@ -1,6 +1,6 @@
-﻿namespace BrowserGame.Internal
+﻿namespace BrowserGame.Data
 {
-    internal class UpgradeSeederSettings
+    public class UpgradeSeederSettings
     {
         public string BuildingName { get; set; }
         public int Clay { get; set; } = 50;

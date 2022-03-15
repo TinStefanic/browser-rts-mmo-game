@@ -1,7 +1,7 @@
-﻿@using BrowserGame.Internal
+﻿@using BrowserGame.ModelUtils
 @using BrowserGame.Static
 @{
-    var cityManager = (CityManager)ViewData["CityManager"];
+    var cityManager = (ICityManager)ViewData["CityManager"];
     ViewData["Title"] = cityManager.Name;
 }
 

@@ -1,5 +1,5 @@
 using BrowserGame.Data;
-using BrowserGame.Internal;
+using BrowserGame.ModelUtils;
 using BrowserGame.Models;
 using BrowserGame.Static;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace BrowserGame.Pages.Game
             ResourceField resourceField = await _context.ResourceFields.Include(rf => rf.City.Player).FirstOrDefaultAsync(rf => rf.Id == id);
             UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(resourceField.GetUpgradeInfoId());
 
-            CityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
+            ICityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
             ViewData["CityManager"] = cityManager;
             ViewData["ResourceField"] = resourceField;
             ViewData["UpgradeInfo"] = upgradeInfo;
@@ -44,7 +44,7 @@ namespace BrowserGame.Pages.Game
                                           .Include(rf => rf.City)
                                           .FirstOrDefaultAsync(rf => rf.Id == FieldId);
 
-            CityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
+            ICityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
 
             if (cityManager.NotUsers(User))
                 return NotFound();

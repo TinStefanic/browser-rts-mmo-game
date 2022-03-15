@@ -10,7 +10,7 @@ using BrowserGame.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using BrowserGame.Static;
-using BrowserGame.Internal;
+using BrowserGame.ModelUtils;
 
 namespace BrowserGame.Pages.Game
 {

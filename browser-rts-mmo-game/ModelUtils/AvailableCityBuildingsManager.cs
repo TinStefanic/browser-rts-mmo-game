@@ -1,18 +1,18 @@
 ﻿using BrowserGame.Models;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.ModelUtils
 {
-	internal class AvailableCityBuildingsManager
+	public class AvailableCityBuildingsManager : IAvailableCityBuildingsManager
 	{
-		public IList<CityBuildingType> AvailableBuildings { get; }
+		public IEnumerable<CityBuildingType> AvailableBuildings { get; }
 
-		private readonly CityManager _cityManager;
+		private readonly ICityManager _cityManager;
 
-		public AvailableCityBuildingsManager(CityManager cityManager)
+		public AvailableCityBuildingsManager(ICityManager cityManager)
 		{
 			_cityManager = cityManager;
 
-			var availableBuildings = new HashSet<CityBuildingType>();
+			var availableBuildings = new SortedSet<CityBuildingType>();
 
 			for (int i = BuildingSlot.NumSpecialBuildings; i < Enum.GetValues(typeof(CityBuildingType)).Length; ++i)
 			{
@@ -25,7 +25,6 @@ namespace BrowserGame.Internal
 			}
 
 			AvailableBuildings = availableBuildings.ToList();
-			(AvailableBuildings as List<CityBuildingType>).Sort();
 		}
 
 		/// <summary>
@@ -33,7 +32,7 @@ namespace BrowserGame.Internal
 		/// </summary>
 		public bool IsAvailable(CityBuildingType cityBuildingType)
 		{
-			return AvailableBuildings.ToHashSet().Contains(cityBuildingType);
+			return AvailableBuildings.Contains(cityBuildingType);
 		}
 	}
 }

@@ -2,9 +2,9 @@
 using BrowserGame.Models;
 using BrowserGame.Static;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.ModelUtils
 {
-	internal class BuildingInfoFactory
+	public class BuildingInfoFactory : IBuildingInfoFactory
 	{
 		private readonly ApplicationDbContext _context;
 
@@ -13,7 +13,7 @@ namespace BrowserGame.Internal
 			_context = context;
 		}
 
-		public async Task<BuildingInfo> CreateNewBuildingInfoAsync(CityBuildingType cityBuildingType)
+		public async Task<IBuildingInfo> CreateNewBuildingInfoAsync(CityBuildingType cityBuildingType)
 		{
 			return new BuildingInfo(cityBuildingType, await _context.UpgradeInfos.FindAsync(cityBuildingType.GetUpgradeInfoId()));
 		}

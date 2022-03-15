@@ -27,7 +27,7 @@ namespace BrowserGame.Models.Misc
 		/// </summary>
 		public long LastUpdate { get; protected set; }
 
-		protected decimal _available;
+		protected decimal _available = 1000000m;
 		/// <summary>
 		/// Returns how much of this resource is currently available.
 		/// </summary>

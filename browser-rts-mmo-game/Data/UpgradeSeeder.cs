@@ -2,9 +2,9 @@
 using BrowserGame.Models;
 using BrowserGame.Static;
 
-namespace BrowserGame.Internal
+namespace BrowserGame.Data
 {
-    internal class UpgradeSeeder
+    public class UpgradeSeeder
     {
         private readonly ApplicationDbContext _context;
 

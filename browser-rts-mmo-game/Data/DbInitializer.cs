@@ -1,5 +1,4 @@
-﻿using BrowserGame.Internal;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BrowserGame.Data

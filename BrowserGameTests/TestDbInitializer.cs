@@ -21,27 +21,7 @@ namespace BrowserGameTests
 			// Id's start with 1.
 			await modelFactory.CreateNewPlayerAsync("testPlayer", "testCapital", "random-test-user-id");
 
-			UpgradeInfo upgradeInfo = GetLvl0CropUpgradeInfo();
-
-			await context.UpgradeInfos.AddAsync(upgradeInfo);
-
 			await context.SaveChangesAsync();
-		}
-
-		public static UpgradeInfo GetLvl0CropUpgradeInfo()
-		{
-			return new UpgradeInfo
-			{
-				ClayCost = 100,
-				CropCost = 100,
-				AdditionalCropUpkeep = 0,
-				IronCost = 100,
-				WoodCost = 100,
-				BuildingName = "Crop",
-				Level = 0,
-				IsFinnalUpgrade = false,
-				UpgradeDuration = 60
-			};
 		}
 	}
 }

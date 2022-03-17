@@ -22,6 +22,7 @@ namespace BrowserGame.ModelUtils
 		CityBuilding Wall { get; }
 		Wood Wood { get; }
 		int WoodPerHour { get; }
+		public City City { get; }
 
 		Task<bool> CanUpgradeAsync(UpgradeInfo upgradeInfo);
 		int GetBuildTime(UpgradeInfo upgradeInfo);

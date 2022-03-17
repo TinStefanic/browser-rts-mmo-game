@@ -13,47 +13,41 @@ namespace BrowserGame.ModelUtils
 	/// </summary>
 	public class CityManager : ICityManager
 	{
-		public int Id => _city.Id;
-		public string Name => _city.Name;
-		public Clay Clay => _city.Clay;
-		public Iron Iron => _city.Iron;
-		public Wood Wood => _city.Wood;
-		public Crop Crop => _city.Crop;
-		public int ClayPerHour => _city.Clay.ProductionPerHour * TimeManager.Speed;
-		public int IronPerHour => _city.Iron.ProductionPerHour * TimeManager.Speed;
-		public int WoodPerHour => _city.Wood.ProductionPerHour * TimeManager.Speed;
-		public int CropPerHour => _city.Crop.ProductionPerHour * TimeManager.Speed;
+		public int Id => City.Id;
+		public string Name => City.Name;
+		public Clay Clay => City.Clay;
+		public Iron Iron => City.Iron;
+		public Wood Wood => City.Wood;
+		public Crop Crop => City.Crop;
+		public int ClayPerHour => City.Clay.ProductionPerHour * TimeManager.Speed;
+		public int IronPerHour => City.Iron.ProductionPerHour * TimeManager.Speed;
+		public int WoodPerHour => City.Wood.ProductionPerHour * TimeManager.Speed;
+		public int CropPerHour => City.Crop.ProductionPerHour * TimeManager.Speed;
 		/// <summary>
 		///  Null if BuildQueue is empty.
 		/// </summary>
-		public string CompletionTime => _city.BuildQueue.CompletionTime?.ToString();
-		public string BuildTargetName => _city.BuildQueue.TargetName;
-		public int? BuildTargetLevel => _city.BuildQueue.TargetLevel;
-		public IList<CityBuilding> BuildingSlots => _city.BuildingSlot.CityBuildings.ToList()
+		public string CompletionTime => City.BuildQueue.CompletionTime?.ToString();
+		public string BuildTargetName => City.BuildQueue.TargetName;
+		public int? BuildTargetLevel => City.BuildQueue.TargetLevel;
+		public IList<CityBuilding> BuildingSlots => City.BuildingSlot.CityBuildings.ToList()
 													.GetRange(BuildingSlot.NumSpecialBuildingSlots, BuildingSlot.NumBuildingSlots);
-		public CityBuilding MainBuilding => _city.BuildingSlot.CityBuildings[0];
-		public CityBuilding Wall => _city.BuildingSlot.CityBuildings[1];
+		public CityBuilding MainBuilding => City.BuildingSlot.CityBuildings[0];
+		public CityBuilding Wall => City.BuildingSlot.CityBuildings[1];
 		private decimal BuildingSpeed => MainBuilding.Value;
 
-		private readonly City _city;
+		public City City { get; }
+
 		private readonly ApplicationDbContext _context;
 
 		public CityManager(City city, ApplicationDbContext context)
 		{
-			_city = city;
+			City = city;
 			_context = context;
 		}
 
 		public static async Task<ICityManager> LoadCityManagerAsync(int cityId, ApplicationDbContext context)
 		{
-			City city = await context.Cities.Include(c => c.Clay.Fields)
-											.Include(c => c.Wood.Fields)
-											.Include(c => c.Iron.Fields)
-											.Include(c => c.Crop.Fields)
-											.Include(c => c.Player)
-											.Include(c => c.BuildQueue)
-											.Include(c => c.BuildingSlot.CityBuildings)
-											.FirstOrDefaultAsync(m => m.Id == cityId);
+			var city = await new ModelFactory(context).LoadCityAsync(cityId);
 
 			var cityManager = new CityManager(city, context);
 
@@ -87,7 +81,7 @@ namespace BrowserGame.ModelUtils
 
 			var upgradeManager = new UpgradeManager(_context);
 
-			await upgradeManager.StartUpgradeAsync(building, _city);
+			await upgradeManager.StartUpgradeAsync(building, City);
 
 			await _context.SaveChangesAsync();
 
@@ -96,14 +90,14 @@ namespace BrowserGame.ModelUtils
 
 		public bool NotUsers(ClaimsPrincipal user)
 		{
-			return _city?.Player?.UserId != user.GetUserId();
+			return City?.Player?.UserId != user.GetUserId();
 		}
 
 		public async Task<bool> IsBuildInProgressAsync()
 		{
 			await UpdateBuildQueueAsync();
 
-			if (_city.BuildQueue.QueueStatus == BuildQueueStatus.Empty) return false;
+			if (City.BuildQueue.QueueStatus == BuildQueueStatus.Empty) return false;
 			else return true;
 		}
 
@@ -117,24 +111,24 @@ namespace BrowserGame.ModelUtils
 
 		public async Task<bool> CanUpgradeAsync(UpgradeInfo upgradeInfo)
 		{
-			if (upgradeInfo.ClayCost > _city.Clay.Available || upgradeInfo.IronCost > _city.Iron.Available) return false;
-			if (upgradeInfo.WoodCost > _city.Wood.Available || upgradeInfo.CropCost > _city.Crop.Available) return false;
+			if (upgradeInfo.ClayCost > City.Clay.Available || upgradeInfo.IronCost > City.Iron.Available) return false;
+			if (upgradeInfo.WoodCost > City.Wood.Available || upgradeInfo.CropCost > City.Crop.Available) return false;
 			if (upgradeInfo.IsFinnalUpgrade) return false;
-			if (!_city.Crop.CanAddUpgradeBuildings) return false;
+			if (!City.Crop.CanAddUpgradeBuildings) return false;
 			await UpdateBuildQueueAsync();
-			if (_city.BuildQueue.QueueStatus != BuildQueueStatus.Empty) return false;
+			if (City.BuildQueue.QueueStatus != BuildQueueStatus.Empty) return false;
 
 			return true;
 		}
 
 		private async Task UpdateBuildQueueAsync()
 		{
-			if (_city.BuildQueue.QueueStatus == BuildQueueStatus.Finished)
+			if (City.BuildQueue.QueueStatus == BuildQueueStatus.Finished)
 			{
 				var upgradeManager = new UpgradeManager(_context);
-				await upgradeManager.FinishUpgradeAsync(_city.BuildQueue.TargetId, _city.BuildQueue.BuildingType);
+				await upgradeManager.FinishUpgradeAsync(City.BuildQueue.TargetId, City.BuildQueue.BuildingType);
 
-				_city.BuildQueue.Clear();
+				City.BuildQueue.Clear();
 				await _context.SaveChangesAsync();
 			}
 		}

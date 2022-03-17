@@ -33,19 +33,20 @@ namespace BrowserGame.ModelUtils
 
 		public async Task FinishUpgradeAsync(int? targetId, BuildingType buildingType)
 		{
+			IBuilding building;
+
 			if (buildingType == BuildingType.Resource)
 			{
-				ResourceField resource = await _context.ResourceFields.FindAsync(targetId);
-				UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(resource.GetUpgradeInfoId());
-
-				resource.Value += upgrade.ValueChangeInt;
-
-				FinishUpgrade(resource, upgrade);
+				building = await _context.ResourceFields.FindAsync(targetId);
 			}
-		}
+			else
+			{
+				building = await _context.CityBuildings.FindAsync(targetId);
+			}
 
-		private static void FinishUpgrade(IBuilding building, UpgradeInfo upgrade)
-		{
+			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(building.GetUpgradeInfoId());
+
+			building.Value += upgrade.ValueChangeDecimal;
 			building.CropUpkeep += upgrade.AdditionalCropUpkeep;
 			building.Level = upgrade.Level + 1;
 			building.IsUpgradeInProgress = false;

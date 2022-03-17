@@ -5,7 +5,7 @@ namespace BrowserGame.Models
 {
 	public class Crop : ResourceBase
 	{
-		public override string Type { get; protected set; } = typeof(Crop).ToString();
+		public override string Type { get; protected set; } = nameof(Crop);
 
 		[NotMapped]
 		public int Upkeep => UpkeepBuildings;

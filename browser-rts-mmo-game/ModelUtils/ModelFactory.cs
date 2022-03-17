@@ -1,5 +1,6 @@
 ﻿using BrowserGame.Data;
 using BrowserGame.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BrowserGame.ModelUtils
 {
@@ -47,6 +48,18 @@ namespace BrowserGame.ModelUtils
 			await _context.SaveChangesAsync();
 
 			return newPlayer;
+		}
+
+		public async Task<City> LoadCityAsync(int cityId)
+		{
+			return await _context.Cities.Include(c => c.Clay.Fields)
+											.Include(c => c.Wood.Fields)
+											.Include(c => c.Iron.Fields)
+											.Include(c => c.Crop.Fields)
+											.Include(c => c.Player)
+											.Include(c => c.BuildQueue)
+											.Include(c => c.BuildingSlot.CityBuildings)
+											.FirstOrDefaultAsync(m => m.Id == cityId);
 		}
 	}
 }

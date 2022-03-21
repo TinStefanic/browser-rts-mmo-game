@@ -7,7 +7,7 @@ namespace BrowserGame.Data
         public static async Task SeedResourceFieldUpgradesAsync(UpgradeSeeder upgradeSeeder)
         {
             int r1 = 50, r2 = 35, r3 = 15, r4 = 20;
-            int production = 5, buildTime = 60;
+            int productionLevel0 = 5, valueChange = 3, buildTime = 60;
 
             var upgradeSettings = new UpgradeSeederSettings
             {
@@ -15,9 +15,10 @@ namespace BrowserGame.Data
                 Wood = r2,
                 Iron = r3,
                 Crop = r4,
-                Value = production,
+                Value = valueChange,
                 BuildTime = buildTime,
-                BuildingName = typeof(Iron).Name
+                BuildingName = nameof(Iron),
+                Level0Value = productionLevel0
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
 
@@ -27,9 +28,10 @@ namespace BrowserGame.Data
                 Wood = r1,
                 Iron = r2,
                 Crop = r4,
-                Value = production,
+                Value = valueChange,
                 BuildTime = buildTime,
-                BuildingName = typeof(Clay).Name
+                BuildingName = nameof(Clay),
+                Level0Value = productionLevel0
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
 
@@ -39,9 +41,10 @@ namespace BrowserGame.Data
                 Wood = r2,
                 Iron = r2,
                 Crop = r4,
-                Value = production,
+                Value = valueChange,
                 BuildTime = buildTime,
-                BuildingName = typeof(Wood).Name
+                BuildingName = nameof(Wood),
+                Level0Value = productionLevel0
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
 
@@ -51,9 +54,10 @@ namespace BrowserGame.Data
                 Wood = r1,
                 Iron = r3,
                 Crop = r4,
-                Value = production,
+                Value = valueChange,
                 BuildTime = buildTime,
-                BuildingName = typeof(Crop).Name
+                BuildingName = nameof(Crop),
+                Level0Value = productionLevel0
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
         }
@@ -66,9 +70,10 @@ namespace BrowserGame.Data
                 Wood = 80,
                 Iron = 60,
                 Crop = 30,
-                Value = 1500,
+                Value = 500,
                 BuildTime = 90,
                 BuildingName = CityBuildingType.Granary.ToString(),
+                Level0Value = CityBuildingType.Granary.GetDefaultValue()
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
         }
@@ -81,9 +86,10 @@ namespace BrowserGame.Data
                 Wood = 130,
                 Iron = 70,
                 Crop = 50,
-                Value = 1500,
+                Value = 500,
                 BuildTime = 110,
                 BuildingName = CityBuildingType.Warehouse.ToString(),
+                Level0Value = CityBuildingType.Warehouse.GetDefaultValue()
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
         }
@@ -96,11 +102,11 @@ namespace BrowserGame.Data
                 Wood = 90,
                 Iron = 150,
                 Crop = 30,
-                Value = 10,
-                ValueFixedChange = 10,
+                ValueFixedChange = 0.1m,
                 UseFixedValue = true,
                 BuildTime = 120,
                 BuildingName = CityBuildingType.Wall.ToString(),
+                Level0Value = CityBuildingType.Wall.GetDefaultValue()
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
         }
@@ -113,11 +119,11 @@ namespace BrowserGame.Data
                 Wood = 170,
                 Iron = 100,
                 Crop = 80,
-                Value = 95,
-                ValueFixedChange = -5,
+                ValueFixedChange = -0.05m,
                 UseFixedValue = true,
                 BuildTime = 150, 
                 BuildingName = CityBuildingType.MainBuilding.ToString(),
+				Level0Value = CityBuildingType.MainBuilding.GetDefaultValue()
             };
             await upgradeSeeder.GenerateAsync(upgradeSettings);
         }

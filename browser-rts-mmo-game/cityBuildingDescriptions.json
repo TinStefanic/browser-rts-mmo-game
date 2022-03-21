@@ -1,0 +1,18 @@
+{
+	"MainBuilding": {
+		"Description": "Higher levels of Main Building allow faster construction times of all buildings in the city.",
+		"ValueDescription": "Construction duration"
+	},
+	"Wall": {
+		"Description": "Increases effectiveness of defending troops.",
+		"ValueDescription": "Defense bonus"
+	},
+	"Warehouse": {
+		"Description": "Increases maximum storage capacity of clay, iron and wood.",
+		"ValueDescription": "Storage"
+	},
+	"Granary": {
+		"Description": "Increases maximum storage capacity of crop.",
+		"ValueDescription": "Storage"
+	}
+}

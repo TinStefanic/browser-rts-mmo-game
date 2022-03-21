@@ -24,6 +24,8 @@ namespace BrowserGame.Pages.Game
 
         public CityBuilding CityBuilding { get; set; }
         [BindProperty]
+        public int CityBuildingId { get; set; }
+        [BindProperty]
         public CityBuildingType CityBuildingType { get; set; }
         public IEnumerable<CityBuildingType> AvailableCityBuildings { get; set; }
 
@@ -31,6 +33,8 @@ namespace BrowserGame.Pages.Game
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            CityBuildingId = id;
+
             CityBuilding = await _context.CityBuildings.FirstOrDefaultAsync(cb => cb.Id == id);
 
             if (CityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
@@ -46,9 +50,12 @@ namespace BrowserGame.Pages.Game
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (CityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
+            CityBuilding = await _context.CityBuildings.FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
 
-            _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding.City.Id, _context);
+            if (CityBuilding == null) return BadRequest();
+
+            _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding?.CityId ?? 0, _context);
+            if (! new AvailableCityBuildingsManager(_cityManager).IsAvailable(CityBuildingType)) return BadRequest();
 
             if (_cityManager.NotUsers(User))
                 return NotFound();

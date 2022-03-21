@@ -19,7 +19,7 @@
 @if (upgrade.IsFinnalUpgrade)
 {
     <div class="text-center">
-        Building is full upgraded!
+        Building is fully upgraded!
     </div>
 }
 else
@@ -42,8 +42,11 @@ else
           Additional crop upkeep @upgrade.AdditionalCropUpkeep
         </div>
         <div>
-            Current value: <span class="text-info">@cityBuilding.Value</span>,
-            Value after upgrade: <span class="text-info">@(upgrade.ValueChangeDecimal + cityBuilding.Value)</span>.
+            @cityBuilding.CityBuildingType.Description()
+        </div>
+        <div>
+            Current @cityBuilding.CityBuildingType.ValueDescription().FirstCharToLower(): <span class="text-info">@cityBuilding.Value</span> <br>
+            @cityBuilding.CityBuildingType.ValueDescription() after upgrade: <span class="text-info">@(upgrade.ValueChangeDecimal + cityBuilding.Value)</span>.
         </div>
         <div>
         Build time: @span.Days day@(span.Days == 1 ? "" : "s"), @span.Hours hour@(span.Hours == 1 ? "" : "s"),
@@ -51,7 +54,7 @@ else
         </div>
          <form method="post">
             <div class="form-group">
-                <input type="hidden" name="cityBuildingId" value="@cityBuilding.Id" />
+                <input type="hidden" name="CityBuildingId" value="@cityBuilding.Id" />
                 <input type="submit" value="Upgrade" class="btn btn-primary" @postButtonDisabled />
             </div>
         </form>

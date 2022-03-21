@@ -22,7 +22,7 @@ namespace BrowserGame.Pages.Game
         }
 
         [BindProperty]
-        public int FieldId { get; set; }
+        public int CityBuildingId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -38,7 +38,7 @@ namespace BrowserGame.Pages.Game
             if (cityManager.NotUsers(User))
                 return NotFound();
 
-            FieldId = id;
+            CityBuildingId = id;
 
             return Page();
         }
@@ -47,7 +47,7 @@ namespace BrowserGame.Pages.Game
         {
             CityBuilding cityBuilding = await _context.CityBuildings
                                           .Include(cb => cb.City)
-                                          .FirstOrDefaultAsync(cb => cb.Id == FieldId);
+                                          .FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
 
             ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 

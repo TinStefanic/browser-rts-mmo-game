@@ -21,7 +21,8 @@ namespace BrowserGameTests
 		{
 			var options = new DbContextOptionsBuilder<ApplicationDbContext>();
 			options.UseSqlServer(_connectionString);
-			
+
+
 			var context = new ApplicationDbContext(options.Options);
 
 			if (!_initialized)

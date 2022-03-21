@@ -22,6 +22,9 @@
             <th>
                 Build duration
             </th>
+            <th>
+                Description
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,9 +45,13 @@
                 @buildingInfo.GetBuildDuration(cityManager).ToHtmlDisplay()
             </td>
             <td>
+                @cityBuildingType.Description()
+            </td>
+            <td>
                 <form method="post">
                     <div class="form-group">
                         <input type="hidden" name="CityBuildingType" value="@cityBuildingType" />
+                        <input type="hidden" name="CityBuildingId" value="@Model.CityBuildingId" />
                         <input type="submit" value="Build" class="btn btn-primary" @(await buildingInfo.CanBeBuiltAsync(cityManager) ? "" : "disabled")/>
                     </div>
                 </form>

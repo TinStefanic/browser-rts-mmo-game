@@ -31,9 +31,9 @@ namespace BrowserGame.ModelUtils
 		public int? BuildTargetLevel => City.BuildQueue.TargetLevel;
 		public IList<CityBuilding> BuildingSlots => City.BuildingSlot.CityBuildings.ToList()
 													.GetRange(BuildingSlot.NumSpecialBuildingSlots, BuildingSlot.NumBuildingSlots);
-		public CityBuilding MainBuilding => City.BuildingSlot.CityBuildings[0];
-		public CityBuilding Wall => City.BuildingSlot.CityBuildings[1];
-		private decimal BuildingSpeed => MainBuilding.Value;
+		public CityBuilding MainBuilding => GetCityBuilding(CityBuildingType.MainBuilding);
+		public CityBuilding Wall => GetCityBuilding(CityBuildingType.Wall);
+		public decimal BuildingSpeed => MainBuilding.Value;
 
 		public City City { get; }
 
@@ -64,6 +64,7 @@ namespace BrowserGame.ModelUtils
 			if (new AvailableCityBuildingsManager(this).IsAvailable(cityBuildingType))
 			{
 				cityBuilding.CityBuildingType = cityBuildingType;
+				cityBuilding.Value = cityBuilding.CityBuildingType.GetDefaultValue();
 
 				return await TryUpgradeAsync(cityBuilding);
 			}
@@ -128,8 +129,49 @@ namespace BrowserGame.ModelUtils
 				var upgradeManager = new UpgradeManager(_context);
 				await upgradeManager.FinishUpgradeAsync(City.BuildQueue.TargetId, City.BuildQueue.BuildingType);
 
+				if (City.BuildQueue.BuildingType == BuildingType.CityBuilding)
+                {
+					if (City.BuildQueue.TargetName == CityBuildingType.Warehouse.ToString())
+                    {
+						int warehouseCapacity = (int) GetCityBuildingValue(CityBuildingType.Warehouse);
+						Clay.MaxCapacity = warehouseCapacity;
+						Wood.MaxCapacity = warehouseCapacity;
+						Iron.MaxCapacity = warehouseCapacity;
+                    }
+					else if (City.BuildQueue.TargetName == CityBuildingType.Granary.ToString())
+                    {
+						Crop.MaxCapacity = (int) GetCityBuildingValue(CityBuildingType.Granary);
+                    }
+                }
+
 				City.BuildQueue.Clear();
 				await _context.SaveChangesAsync();
+			}
+		}
+
+		/// <inheritdoc/>
+		public CityBuilding GetCityBuilding(CityBuildingType type)
+		{
+			if (type == CityBuildingType.EmptySlot) return null;
+			return City.BuildingSlot.CityBuildings.FirstOrDefault(cb => cb.CityBuildingType == type);
+		}
+
+		public bool ContainsCityBuilding(CityBuildingType type)
+		{
+			return GetCityBuilding(type) != null;
+		}
+
+		/// <inheritdoc/>
+		public decimal GetCityBuildingValue(CityBuildingType type)
+		{
+			CityBuilding cityBuilding = GetCityBuilding(type);
+			if (cityBuilding == null)
+			{
+				return type.GetDefaultValue();
+			}
+			else
+			{
+				return cityBuilding.Value;
 			}
 		}
 	}

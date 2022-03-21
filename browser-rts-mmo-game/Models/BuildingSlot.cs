@@ -20,7 +20,7 @@ namespace BrowserGame.Models
 		{
 			CityBuildings = new List<CityBuilding>
 			{
-				new CityBuilding(city, CityBuildingType.MainBuilding, 1m),
+				new CityBuilding(city, CityBuildingType.MainBuilding),
 				new CityBuilding(city, CityBuildingType.Wall)
 			};
 

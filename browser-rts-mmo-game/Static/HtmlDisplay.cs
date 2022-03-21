@@ -31,5 +31,11 @@ namespace BrowserGame.Static
 
             return text;
         }
+
+        public static string FirstCharToLower(this string s)
+		{
+            if (s == null || s.Length == 1) return s?.ToLowerInvariant();
+            return char.ToLowerInvariant(s[0]) + s[1..];
+		}
     }
 }

@@ -42,8 +42,8 @@ else
           Additional crop upkeep @upgrade.AdditionalCropUpkeep
         </div>
         <div>
-            Current production: <span class="text-info">@resourceField.ProductionPerHour</span>
-            production after upgrade: <span class="text-info">@(upgrade.ValueChangeInt + resourceField.ProductionPerHour)</span>.
+            Current production: <span class="text-info">@(resourceField.ProductionPerHour * TimeManager.Speed)</span> <br>
+            Production after upgrade: <span class="text-info">@((upgrade.ValueChangeInt + resourceField.ProductionPerHour) * TimeManager.Speed)</span>.
         </div>
         <div>
         Build time: @span.ToHtmlDisplay()

@@ -28,6 +28,7 @@ namespace BrowserGame.Data
                 UpgradeDuration = upgradeSettings.BuildTime,
                 ValueChangeDecimal = upgradeSettings.Value
             };
+            if (upgradeSettings.UseFixedValue) upgradeNew.ValueChangeDecimal = upgradeSettings.ValueFixedChange;
 
             _context.UpgradeInfos.Add(upgradeNew);
 
@@ -55,7 +56,8 @@ namespace BrowserGame.Data
                 else
 				{
                     decimal valueFactor = upgradeSettings.ValueScaling * (decimal)Math.Pow((double)upgradeSettings.ValueScalingDelta, level);
-                    upgradeNew.ValueChangeDecimal = upgradeOld.ValueChangeDecimal * valueFactor;
+
+                    upgradeNew.ValueChangeDecimal = Convert.ToInt32(upgradeOld.ValueChangeDecimal * valueFactor);
                 }
 
                 _context.UpgradeInfos.Add(upgradeNew);

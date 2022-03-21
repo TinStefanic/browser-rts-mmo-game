@@ -71,8 +71,46 @@ namespace BrowserGame.ModelUtils.Tests
 			var upgradeInfo = await _context.UpgradeInfos.FindAsync(cropField.GetUpgradeInfoId());
 			Assert.IsTrue(await _cityManager.CanUpgradeAsync(upgradeInfo));
 			Assert.IsTrue(await _cityManager.TryUpgradeAsync(cropField));
-			await new UpgradeManager(_context).FinishUpgradeAsync(cropField.Id, cropField.BuildingType);
+			await _upgradeManager.FinishUpgradeAsync(cropField.Id, cropField.BuildingType);
 			Assert.AreEqual(1, _cityManager.Crop.Fields.First().Level);
+		}
+
+		[TestMethod()]
+		public void GetCityBuildingShouldReturnWallTest()
+		{
+			Assert.AreEqual(CityBuildingType.Wall, _cityManager.GetCityBuilding(CityBuildingType.Wall).CityBuildingType);
+		}
+
+		[TestMethod()]
+		public void GetCityBuildingShouldReturnNullTest()
+		{
+			Assert.IsNull(_cityManager.GetCityBuilding(CityBuildingType.Granary));
+		}
+
+		[TestMethod()]
+		public void ContainsCityBuildingShouldBeTrueTest()
+		{
+			Assert.IsTrue(_cityManager.ContainsCityBuilding(CityBuildingType.MainBuilding));
+		}
+
+		[TestMethod()]
+		public void ContainsCityBuildingShouldBeFalseTest()
+		{
+			Assert.IsFalse(_cityManager.ContainsCityBuilding(CityBuildingType.Warehouse));
+		}
+
+		[TestMethod()]
+		public void GetCityBuildingValueShouldReturn1Test()
+		{
+			var roundedReturnValue = decimal.Round(_cityManager.GetCityBuildingValue(CityBuildingType.MainBuilding), 10);
+			Assert.AreEqual(1m, roundedReturnValue);
+		}
+
+		[TestMethod()]
+		public void GetCityBuildingValueShouldReturn1000Test()
+		{
+			var roundedReturnValue = decimal.Round(_cityManager.GetCityBuildingValue(CityBuildingType.Warehouse), 10);
+			Assert.AreEqual(1000m, roundedReturnValue);
 		}
 	}
 }

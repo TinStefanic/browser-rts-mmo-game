@@ -49,5 +49,17 @@ namespace BrowserGame.ModelUtils.Tests
 			await _upgradeManager.FinishUpgradeAsync(_cityManager.Wall.Id, _cityManager.Wall.BuildingType);
 			Assert.AreEqual(buildingLevel+1, _cityManager.Wall.Level);
 		}
+
+		[TestMethod()]
+		public async Task ShouldDecreaseBuildingTimeTest()
+		{
+			decimal oldBuildingSpeed = _cityManager.BuildingSpeed;
+			// NOTE: This method saves changes to database.
+			Assert.IsTrue(await _cityManager.TryUpgradeAsync(_cityManager.MainBuilding));
+			// Delay is needed to ensure build completes (even if build duration is 0 seconds).
+			await Task.Delay(50);
+			Assert.IsFalse(await _cityManager.IsBuildInProgressAsync());
+			Assert.IsTrue(oldBuildingSpeed > _cityManager.BuildingSpeed);
+		}
 	}
 }

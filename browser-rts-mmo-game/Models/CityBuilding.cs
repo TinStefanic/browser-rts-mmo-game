@@ -1,4 +1,5 @@
-﻿using BrowserGame.Models.Misc;
+﻿using BrowserGame.Data;
+using BrowserGame.Models.Misc;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BrowserGame.Models
@@ -28,11 +29,11 @@ namespace BrowserGame.Models
 			CityBuildingType = CityBuildingType.EmptySlot;
 		}
 
-		public CityBuilding(City city, CityBuildingType cityBuildingName, decimal value = 0m)
+		public CityBuilding(City city, CityBuildingType cityBuildingType)
 		{
 			City = city;
-			CityBuildingType = cityBuildingName;
-			Value = value;
+			CityBuildingType = cityBuildingType;
+			Value = cityBuildingType.GetDefaultValue();
 		}
 	}
 

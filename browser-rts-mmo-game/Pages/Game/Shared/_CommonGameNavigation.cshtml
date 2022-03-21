@@ -1,8 +1,12 @@
 ﻿@using BrowserGame.ModelUtils
+@using BrowserGame.Models
 @using BrowserGame.Static
 @{
     var cityManager = (ICityManager)ViewData["CityManager"];
     ViewData["Title"] = cityManager.Name;
+
+    var warehouseCapacity = (int)cityManager.GetCityBuildingValue(CityBuildingType.Warehouse);
+    var granaryCapacity = (int)cityManager.GetCityBuildingValue(CityBuildingType.Granary);
 }
 
 <div class="row justify-content-around text-center">
@@ -15,8 +19,8 @@
 </div>
 
 <div class="row justify-content-around text-center">
-    <div class="col-md-3 text-@HtmlColors.Clay"><h4>Clay @cityManager.Clay.AvailableInt/@cityManager.Clay.MaxCapacity, +@cityManager.ClayPerHour</h4></div>
-    <div class="col-md-3 text-@HtmlColors.Iron"><h4>Iron @cityManager.Iron.AvailableInt/@cityManager.Iron.MaxCapacity, +@cityManager.IronPerHour</h4></div>
-    <div class="col-md-3 text-@HtmlColors.Wood"><h4>Wood @cityManager.Wood.AvailableInt/@cityManager.Wood.MaxCapacity, +@cityManager.WoodPerHour</h4></div>
-    <div class="col-md-3 text-@HtmlColors.Crop"><h4>Crop @cityManager.Crop.AvailableInt/@cityManager.Crop.MaxCapacity, +@cityManager.CropPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Clay"><h4>Clay @cityManager.Clay.AvailableInt/@warehouseCapacity, +@cityManager.ClayPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Iron"><h4>Iron @cityManager.Iron.AvailableInt/@warehouseCapacity, +@cityManager.IronPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Wood"><h4>Wood @cityManager.Wood.AvailableInt/@warehouseCapacity, +@cityManager.WoodPerHour</h4></div>
+    <div class="col-md-3 text-@HtmlColors.Crop"><h4>Crop @cityManager.Crop.AvailableInt/@granaryCapacity, +@cityManager.CropPerHour</h4></div>
 </div>

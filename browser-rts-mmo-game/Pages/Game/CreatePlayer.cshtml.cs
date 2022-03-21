@@ -39,6 +39,7 @@ namespace BrowserGame.Pages.Game
         [BindProperty]
         public string CapitalName { get; set; }
         public City Capital { get; set; } 
+        public string VerificationError { get; set; }
 
 
         public async Task<IActionResult> OnPostAsync()
@@ -51,12 +52,29 @@ namespace BrowserGame.Pages.Game
                 return Page();
             }
 
+            if (await PlayerNameOrCityNameAlreadyInUse()) return Page();
+
             Player player = await _modelFactory.CreateNewPlayerAsync(PlayerName, CapitalName, User.GetUserId());
 
             return Redirect($"/Game/OuterCity/{player.Capital.Id}");
         }
 
-        private async Task<string> RedirectIfAlreadyCreatedAsync()
+		private async Task<bool> PlayerNameOrCityNameAlreadyInUse()
+		{
+            if (await _context.Players.AnyAsync(p => p.Name == PlayerName))
+            {
+                VerificationError = "Player name already in use.";
+                return true;
+            }
+            else if (await _context.Cities.AnyAsync(c => c.Name == CapitalName))
+            {
+                VerificationError = "City name already in use.";
+                return true;
+            }
+            else return false;
+        }
+
+		private async Task<string> RedirectIfAlreadyCreatedAsync()
 		{
             Player player = await _context.Players.Include(p => p.Capital)
 											   .FirstOrDefaultAsync(p => p.UserId == User.GetUserId());

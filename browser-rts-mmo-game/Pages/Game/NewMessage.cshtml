@@ -1,0 +1,41 @@
+﻿@page
+@using BrowserGame.ModelUtils
+@model BrowserGame.Pages.Game.NewMessageModel
+
+@{
+    var cityManager = (ICityManager)ViewData["CityManager"];
+}
+
+<partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
+
+<div class="row justify-content-center text-center">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Message.RecipientName" class="control-label"></label>
+                <input asp-for="Recipient" class="form-control" />
+                <span asp-validation-for="Message.RecipientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Message.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.MessageBody" class="control-label"></label>
+                <textarea asp-for="MessageBody" class="form-control" text-wrap:normal" type="text" rows="8"></textarea>
+                <span asp-validation-for="Message.MessageBody" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<partial name="./Shared/_CommonBuildProgress" view-data="ViewData"/>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

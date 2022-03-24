@@ -1,21 +1,29 @@
 ﻿@using BrowserGame.ModelUtils
 @using BrowserGame.Models
 @using BrowserGame.Static
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Context
 @{
     var cityManager = (ICityManager)ViewData["CityManager"];
-    ViewData["Title"] = cityManager.Name;
 
     var warehouseCapacity = (int)cityManager.GetCityBuildingValue(CityBuildingType.Warehouse);
     var granaryCapacity = (int)cityManager.GetCityBuildingValue(CityBuildingType.Granary);
+
+    bool hasUnreadMessages = 
+        await Context.Messages
+        .Where(m => m.RecipientId == cityManager.City.PlayerId && m.Unread)
+        .AnyAsync();
+    var textColor = hasUnreadMessages ? "text-info" : "text-primary";
 }
 
 <div class="row justify-content-around text-center">
-    <div class="col-3"><h3><a asp-area="" asp-page="/Game/OuterCity" asp-route-id="@cityManager.Id">Outer City</a></h3></div>
-    <div class="col-3"><h3><a asp-area="" asp-page="/Game/InnerCity" asp-route-id="@cityManager.Id">Inner City</a></h3></div>
+    <div class="col-3"><h3><a class="text-primary" asp-area="" asp-page="/Game/OuterCity" asp-route-id="@cityManager.Id">Outer City</a></h3></div>
+    <div class="col-3"><h3><a class="text-primary" asp-area="" asp-page="/Game/InnerCity" asp-route-id="@cityManager.Id">Inner City</a></h3></div>
+    <div class="col-3"><h3><a class="@textColor" asp-area="" asp-page="/Game/Inbox">Inbox</a></h3></div>
 </div>
 
 <div class="text-center">
-    <h1>@ViewData["Title"]</h1>
+    <h1>@cityManager.Name</h1>
 </div>
 
 <div class="row justify-content-around text-center">

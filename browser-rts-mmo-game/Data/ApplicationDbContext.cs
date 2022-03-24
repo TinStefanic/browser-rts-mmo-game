@@ -17,6 +17,7 @@ namespace BrowserGame.Data
         public DbSet<BuildQueue> BuildQueues { get; set; }
         public DbSet<CityBuilding> CityBuildings { get; set; }
         public DbSet<BuildingSlot> BuildingSlots { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

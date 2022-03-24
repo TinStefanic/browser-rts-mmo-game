@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace BrowserGameTests
 				await TestDbInitializer.SeedAsync(context);
 
 				// Speed should be large enough to ensure build times last 0 seconds.
-				typeof(TimeManager).GetProperty("Speed").SetValue(null, 3600);
+				typeof(TimeManager).GetField("_speed", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 3600);
 
 				_initialized = true;
 			}

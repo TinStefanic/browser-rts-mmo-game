@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using Newtonsoft.Json.Linq;
+using System.Numerics;
 
 namespace BrowserGame.Static
 {
@@ -6,8 +7,8 @@ namespace BrowserGame.Static
 	{
 		public static long Ticks => DateTime.Now.Ticks;
 
-		// Set from appsettings.json in Program.cs.
-		public static int Speed { get; private set; }
+		private static int? _speed = null;
+		public static int Speed => _speed ??= SpeedFromJson();
 
 		/// <summary>
 		/// Returns current time in ticks and calculates time elapsed in hours.
@@ -20,6 +21,12 @@ namespace BrowserGame.Static
 			long currentTime = Ticks;
 			elapsedHours = (decimal)new TimeSpan(currentTime - lastUpdate).TotalHours * Speed;
 			return currentTime;
+		}
+
+		private static int SpeedFromJson()
+		{
+			string descriptonsPath = "gamesettings.json";
+			return ((int)JObject.Parse(File.ReadAllText(descriptonsPath))["GameSpeed"]);
 		}
 	}
 }

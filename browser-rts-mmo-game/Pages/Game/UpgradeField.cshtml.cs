@@ -23,15 +23,15 @@ namespace BrowserGame.Pages.Game
         public async Task<IActionResult> OnGetAsync(int id)
         {
             ResourceField resourceField = await _context.ResourceFields.Include(rf => rf.City.Player).FirstOrDefaultAsync(rf => rf.Id == id);
+            if (resourceField == null) return NotFound();
             UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(resourceField.GetUpgradeInfoId());
 
             ICityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
+            if (cityManager.NotUsers(User)) return NotFound();
+
             ViewData["CityManager"] = cityManager;
             ViewData["ResourceField"] = resourceField;
             ViewData["UpgradeInfo"] = upgradeInfo;
-
-            if (cityManager.NotUsers(User))
-                return NotFound();
 
             FieldId = id;
 
@@ -43,6 +43,7 @@ namespace BrowserGame.Pages.Game
             ResourceField resourceField = await _context.ResourceFields
                                           .Include(rf => rf.City)
                                           .FirstOrDefaultAsync(rf => rf.Id == FieldId);
+            if (resourceField == null) return NotFound();
 
             ICityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
 

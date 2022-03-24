@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrowserGame", "BrowserGame.csproj", "{833D7764-74FB-4527-8579-278711D49F21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserGameTests", "..\BrowserGameTests\BrowserGameTests.csproj", "{910A7090-5D28-4783-A53F-9BF14C32AA81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrowserGameTests", "..\BrowserGameTests\BrowserGameTests.csproj", "{910A7090-5D28-4783-A53F-9BF14C32AA81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

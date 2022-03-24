@@ -27,16 +27,17 @@ namespace BrowserGame.Pages.Game
         public async Task<IActionResult> OnGetAsync(int id)
         {
             CityBuilding cityBuilding = await _context.CityBuildings.Include(cb => cb.City.Player).FirstOrDefaultAsync(cb => cb.Id == id);
+            if (cityBuilding == null) return NotFound();
+
             UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(cityBuilding.GetUpgradeInfoId());
 
 			ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 
+            if (cityManager.NotUsers(User)) return Forbid();
+
             ViewData["CityManager"] = cityManager;
             ViewData["CityBuilding"] = cityBuilding;
             ViewData["UpgradeInfo"] = upgradeInfo;
-
-            if (cityManager.NotUsers(User))
-                return NotFound();
 
             CityBuildingId = id;
 
@@ -48,6 +49,7 @@ namespace BrowserGame.Pages.Game
             CityBuilding cityBuilding = await _context.CityBuildings
                                           .Include(cb => cb.City)
                                           .FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
+            if (cityBuilding == null) return NotFound();
 
             ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
 

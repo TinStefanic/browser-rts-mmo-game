@@ -25,7 +25,7 @@ namespace BrowserGame.Pages.Game
             _modelFactory = new ModelFactory(_context);
         }
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             string redirect = await RedirectIfAlreadyCreatedAsync();
             if (redirect != null) return Redirect(redirect);
@@ -76,10 +76,9 @@ namespace BrowserGame.Pages.Game
 
 		private async Task<string> RedirectIfAlreadyCreatedAsync()
 		{
-            Player player = await _context.Players.Include(p => p.Capital)
-											   .FirstOrDefaultAsync(p => p.UserId == User.GetUserId());
+            Player player = await _context.Players.FirstOrDefaultAsync(p => p.UserId == User.GetUserId());
 
-            if (player != null) return $"/Game/OuterCity/{player.Capital.Id}";
+            if (player != null) return $"/Game/OuterCity/{player.ActiveCityId}";
             return null;
         }
     }

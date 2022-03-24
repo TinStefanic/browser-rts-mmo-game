@@ -1,0 +1,77 @@
+﻿@page
+@using BrowserGame.ModelUtils
+@model BrowserGame.Pages.Game.InboxModel
+@{
+    var cityManager = (ICityManager)ViewData["CityManager"];
+}
+
+<partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
+
+@* 
+    Based on:
+    https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0#create-the-paginatedlist-class
+*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Messages[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Messages[0].SenderName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Messages[0].SentAt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var message in Model.Messages) {
+            <tr>
+                <td>
+                    <a asp-page="./OpenMessage"
+                        asp-route-id="@message.Id"
+                        asp-route-pageIndex="@Model.Messages.PageIndex">
+                        <span class="@(message.Unread ? "text-info" : "text-muted")">
+                            @Html.DisplayFor(modelMessage => message.Title)
+                        </span>
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelMessage => message.SenderName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelMessage => message.SentAt)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Messages.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Messages.HasNextPage ? "disabled" : "";
+}
+
+<div class="text-center pt-5">
+    <a asp-page="./Inbox"
+       asp-route-pageIndex="@(Model.Messages.PageIndex - 1)"
+       class="btn btn-primary @prevDisabled">
+        Previous
+    </a>
+    <a asp-page="./Inbox"
+       asp-route-pageIndex="@(Model.Messages.PageIndex + 1)"
+       class="btn btn-primary @nextDisabled">
+        Next
+    </a>
+    
+    <br /> <br />
+
+    <a asp-page="./NewMessage"
+       class="btn btn-primary">
+        New Message
+    </a>
+</div>
+
+
+<partial name="./Shared/_CommonBuildProgress" view-data="ViewData"/>

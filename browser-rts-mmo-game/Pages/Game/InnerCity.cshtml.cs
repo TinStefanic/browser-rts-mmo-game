@@ -21,25 +21,24 @@ namespace BrowserGame.Pages.Game
             _context = context;
         }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? recivedId)
         {
-            if (id == null)
-            {
-                Player player = await _context.Players.Include(p => p.Capital)
+            Player player = await _context.Players.Include(p => p.Capital)
                                                    .FirstOrDefaultAsync(p => p.UserId == User.GetUserId());
 
-                if (player == null) return Redirect("/Game/CreatePlayer");
+            if (player == null) return Redirect("/Game/CreatePlayer");
 
-                id = player.Capital.Id;
-            }
+            int id = recivedId ?? player.ActiveCityId;
 
-            ICityManager cityManager = await CityManager.LoadCityManagerAsync(id ?? 0, _context);
+            ICityManager cityManager = await CityManager.LoadCityManagerAsync(id, _context);
 
             if (cityManager.NotUsers(User))
             {
-                return NotFound();
+                return Forbid();
             }
 
+            player.ActiveCityId = id;
+            await _context.SaveChangesAsync();
             ViewData["CityManager"] = cityManager;
             return Page();
         }

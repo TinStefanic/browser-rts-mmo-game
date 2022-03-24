@@ -22,9 +22,6 @@ builder.Services.AddRazorPages(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
-// Loads speed from appsettings.json into a property with private setter.
-typeof(TimeManager).GetProperty("Speed").SetValue(null, int.Parse(builder.Configuration.GetSection("GameSpeed").Value));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

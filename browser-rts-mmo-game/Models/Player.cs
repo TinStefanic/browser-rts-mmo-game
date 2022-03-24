@@ -20,5 +20,7 @@ namespace BrowserGame.Models
         public string Name { get; set; }
 
         public virtual City Capital { get; set; }
+
+        public int ActiveCityId { get; set; }
     }
 }

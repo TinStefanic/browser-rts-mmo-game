@@ -41,6 +41,8 @@ namespace BrowserGame.Pages.Game
 
             _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding.CityId ?? 0, _context);
 
+            if (_cityManager.NotUsers(User)) return Forbid();
+
             ViewData["CityManager"] = _cityManager;
 
             AvailableCityBuildings = new AvailableCityBuildingsManager(_cityManager).AvailableBuildings;
@@ -52,13 +54,13 @@ namespace BrowserGame.Pages.Game
         {
             CityBuilding = await _context.CityBuildings.FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
 
-            if (CityBuilding == null) return BadRequest();
+            if (CityBuilding == null) return NotFound();
 
             _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding?.CityId ?? 0, _context);
-            if (! new AvailableCityBuildingsManager(_cityManager).IsAvailable(CityBuildingType)) return BadRequest();
 
-            if (_cityManager.NotUsers(User))
-                return NotFound();
+            if (_cityManager.NotUsers(User)) return Forbid();
+
+            if (! new AvailableCityBuildingsManager(_cityManager).IsAvailable(CityBuildingType)) return BadRequest();
 
             if (await _cityManager.TryCreateBuildingAsync(CityBuilding, CityBuildingType))
                 return Redirect($"/Game/InnerCity/{_cityManager.Id}");

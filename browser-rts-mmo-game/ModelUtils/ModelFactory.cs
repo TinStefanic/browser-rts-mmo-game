@@ -45,6 +45,7 @@ namespace BrowserGame.ModelUtils
 			_context.CityBuildings.AddRange(newCity.BuildingSlot.CityBuildings);
 
 			newPlayer.Capital = newCity;
+			newPlayer.ActiveCityId = newCity.Id;
 			await _context.SaveChangesAsync();
 
 			return newPlayer;

@@ -1,6 +1,6 @@
 ﻿using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 
 namespace BrowserGame.Data
 {
@@ -15,7 +15,7 @@ namespace BrowserGame.Data
 
         public async Task GenerateAsync(UpgradeSeederSettings upgradeSettings)
         {
-            var upgradeNew = new UpgradeInfo()
+            var upgradeNew = new Upgrade()
             {
                 BuildingName = upgradeSettings.BuildingName,
                 ClayCost = upgradeSettings.Clay,
@@ -30,14 +30,18 @@ namespace BrowserGame.Data
             };
             if (upgradeSettings.UseFixedValue) upgradeNew.ValueChangeDecimal = upgradeSettings.ValueFixedChange;
 
-            _context.UpgradeInfos.Add(upgradeNew);
+            _context.Upgrades.Add(upgradeNew);
 
             for (int level = 1; level <= upgradeSettings.FinalLevel; ++level)
 			{
-                UpgradeInfo upgradeOld = upgradeNew;
+                Upgrade upgradeOld = upgradeNew;
 
-                decimal costFactor = upgradeSettings.CostScaling * (decimal)Math.Pow((double)upgradeSettings.CostScalingDelta, level);
-                decimal upgradeFactor = upgradeSettings.TimeScaling * (decimal)Math.Pow((double)upgradeSettings.TimeScalingDelta, level);
+                decimal costFactor = 
+                    upgradeSettings.CostScaling * 
+                    (decimal)Math.Pow((double)upgradeSettings.CostScalingDelta, level);
+                decimal upgradeFactor =
+                    upgradeSettings.TimeScaling *
+                    (decimal)Math.Pow((double)upgradeSettings.TimeScalingDelta, level);
 
                 upgradeNew = new()
                 {
@@ -55,12 +59,14 @@ namespace BrowserGame.Data
                 if (upgradeSettings.UseFixedValue) upgradeNew.ValueChangeDecimal = upgradeSettings.ValueFixedChange;
                 else
 				{
-                    decimal valueFactor = upgradeSettings.ValueScaling * (decimal)Math.Pow((double)upgradeSettings.ValueScalingDelta, level);
+                    decimal valueFactor = 
+                        upgradeSettings.ValueScaling * 
+                        (decimal)Math.Pow((double)upgradeSettings.ValueScalingDelta, level);
 
                     upgradeNew.ValueChangeDecimal = Convert.ToInt32(upgradeOld.ValueChangeDecimal * valueFactor);
                 }
 
-                _context.UpgradeInfos.Add(upgradeNew);
+                _context.Upgrades.Add(upgradeNew);
 			}
 
             await _context.SaveChangesAsync();

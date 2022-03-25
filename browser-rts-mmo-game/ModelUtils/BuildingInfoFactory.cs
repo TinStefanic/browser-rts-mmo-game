@@ -1,6 +1,6 @@
 ﻿using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 
 namespace BrowserGame.ModelUtils
 {
@@ -15,7 +15,11 @@ namespace BrowserGame.ModelUtils
 
 		public async Task<IBuildingInfo> CreateNewBuildingInfoAsync(CityBuildingType cityBuildingType)
 		{
-			return new BuildingInfo(cityBuildingType, await _context.UpgradeInfos.FindAsync(cityBuildingType.GetUpgradeInfoId()));
+			return new BuildingInfo(
+				cityBuildingType, 
+				await _context.Upgrades.FindAsync(cityBuildingType.GetUpgradeId()),
+				_context
+			);
 		}
 	}
 }

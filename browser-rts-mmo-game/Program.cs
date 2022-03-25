@@ -1,5 +1,5 @@
 using BrowserGame.Data;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +21,8 @@ builder.Services.AddRazorPages(options =>
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+
+builder.Services.AddScoped<IHtmlColors, HtmlColors>();
 
 var app = builder.Build();
 

@@ -2,7 +2,7 @@
 
 namespace BrowserGame.ModelUtils
 {
-	public interface IAvailableCityBuildingsManager
+	public interface IAvailableCityBuildings
 	{
 		IEnumerable<CityBuildingType> AvailableBuildings { get; }
 

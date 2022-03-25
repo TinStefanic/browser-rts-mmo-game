@@ -12,7 +12,7 @@ namespace BrowserGame.Data
         public DbSet<Iron> Irons { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<ResourceField> ResourceFields { get; set; }
-        public DbSet<UpgradeInfo> UpgradeInfos { get; set; }
+        public DbSet<Upgrade> Upgrades { get; set; }
         public DbSet<Wood> Woods { get; set; }
         public DbSet<BuildQueue> BuildQueues { get; set; }
         public DbSet<CityBuilding> CityBuildings { get; set; }

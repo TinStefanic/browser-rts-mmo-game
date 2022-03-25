@@ -1,11 +1,14 @@
 ﻿@using BrowserGame.ModelUtils
+@using BrowserGame.Models
+@inject ApplicationDbContext DbContext
 @{
-    var cityManager = (ICityManager)ViewData["CityManager"];
+    var city = (City)ViewData["City"];
 }
 
-@if (await cityManager.IsBuildInProgressAsync()) {
+@if (await city.IsBuildInProgressAsync(DbContext)) {
     <div class="text-center pt-5 text-info">
-        Currently building level @cityManager.BuildTargetLevel @cityManager.BuildTargetName, building will complete at @(cityManager.CompletionTime).
+        Currently building level @city.BuildQueue.TargetLevel @city.BuildQueue.TargetName,
+        building will complete at @(city.BuildQueue.CompletionTime).
     </div>
 } 
 

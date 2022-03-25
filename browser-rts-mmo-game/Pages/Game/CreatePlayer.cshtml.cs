@@ -9,7 +9,7 @@ using BrowserGame.Data;
 using BrowserGame.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using BrowserGame.ModelUtils;
 
 namespace BrowserGame.Pages.Game
@@ -39,7 +39,7 @@ namespace BrowserGame.Pages.Game
         [BindProperty]
         public string CapitalName { get; set; }
         public City Capital { get; set; } 
-        public string VerificationError { get; set; }
+        public string VerificationErrorMessage { get; set; }
 
 
         public async Task<IActionResult> OnPostAsync()
@@ -63,12 +63,12 @@ namespace BrowserGame.Pages.Game
 		{
             if (await _context.Players.AnyAsync(p => p.Name == PlayerName))
             {
-                VerificationError = "Player name already in use.";
+                VerificationErrorMessage = "Player name already in use.";
                 return true;
             }
             else if (await _context.Cities.AnyAsync(c => c.Name == CapitalName))
             {
-                VerificationError = "City name already in use.";
+                VerificationErrorMessage = "City name already in use.";
                 return true;
             }
             else return false;

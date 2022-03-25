@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ModelUtils;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 
 namespace BrowserGame.Pages.Game
 {
@@ -30,16 +30,16 @@ namespace BrowserGame.Pages.Game
 
             int id = recivedId ?? player.ActiveCityId;
 
-            ICityManager cityManager = await CityManager.LoadCityManagerAsync(id, _context);
+            City city = await new ModelFactory(_context).LoadCityAsync(id);
 
-            if (cityManager.NotUsers(User))
+            if (city.NotUsers(User))
             {
                 return Forbid();
             }
 
             player.ActiveCityId = id;
             await _context.SaveChangesAsync();
-            ViewData["CityManager"] = cityManager;
+            ViewData["City"] = city;
             return Page();
         }
     }

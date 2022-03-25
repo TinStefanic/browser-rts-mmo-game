@@ -1,11 +1,12 @@
 ﻿@page "{id:int}"
 @using BrowserGame.ModelUtils
 @using BrowserGame.Models
-@using BrowserGame.Static
+@using BrowserGame.Utilities
 @model BrowserGame.Pages.Game.NewCityBuildingModel
+@inject IHtmlColors HtmlColors
 
 @{
-    var cityManager = (ICityManager)ViewData["CityManager"];
+    var city = (City)ViewData["City"];
 }
 
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
@@ -42,7 +43,7 @@
                 <div class="text-@HtmlColors.Crop">@buildingInfo.CropCost</div>
             </td>
             <td>
-                @buildingInfo.GetBuildDuration(cityManager).ToHtmlDisplay()
+                @buildingInfo.GetBuildDuration(city).ToHtmlDisplay()
             </td>
             <td>
                 @cityBuildingType.Description()
@@ -52,7 +53,10 @@
                     <div class="form-group">
                         <input type="hidden" name="CityBuildingType" value="@cityBuildingType" />
                         <input type="hidden" name="CityBuildingId" value="@Model.CityBuildingId" />
-                        <input type="submit" value="Build" class="btn btn-primary" @(await buildingInfo.CanBeBuiltAsync(cityManager) ? "" : "disabled")/>
+                        <input type="submit" 
+                            value="Build" 
+                            class="btn btn-primary" 
+                            @(await buildingInfo.CanBeBuiltAsync(city) ? "" : "disabled")/>
                     </div>
                 </form>
             </td>

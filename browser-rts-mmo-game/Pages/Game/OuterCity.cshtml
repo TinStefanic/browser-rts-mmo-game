@@ -1,11 +1,12 @@
 ﻿@page "{recivedId:int?}"
 @using BrowserGame.ModelUtils
 @using BrowserGame.Models
-@using BrowserGame.Static
+@using BrowserGame.Utilities
 @model BrowserGame.Pages.Game.OuterCityModel
+@inject IHtmlColors HtmlColors
 
 @{
-    var cityManager = (ICityManager)ViewData["CityManager"];
+    var city = (City)ViewData["City"];
 }
 
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
@@ -16,9 +17,12 @@
             <div class="col-8 text-@HtmlColors.Clay">
                 <div><h3>Clay</h3></div>
                 <div class="row justify-content-around">
-                    @foreach (ResourceField resourceField in cityManager.Clay.Fields) {
+                    @foreach (ResourceField resourceField in city.Clay.Fields) {
                         <div class="col-5 mt-2 border border-@HtmlColors.Clay">
-                            <a class="text-@HtmlColors.Clay" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                            <a class="text-@HtmlColors.Clay" 
+                            asp-area="" 
+                            asp-page="/Game/UpgradeField" 
+                            asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>
@@ -33,9 +37,12 @@
             <div class="col-8 text-@HtmlColors.Iron">
                 <div><h3>Iron</h3></div>
                 <div class="row justify-content-around">
-                    @foreach (ResourceField resourceField in cityManager.Iron.Fields) {
+                    @foreach (ResourceField resourceField in city.Iron.Fields) {
                         <div class="col-5 mt-2 border border-@HtmlColors.Iron">
-                            <a class="text-@HtmlColors.Iron" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                            <a class="text-@HtmlColors.Iron" 
+                            asp-area="" 
+                            asp-page="/Game/UpgradeField" 
+                            asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>
@@ -49,9 +56,12 @@
             <div class="col-8 text-@HtmlColors.Wood">
                 <div><h3>Wood</h3></div>
                 <div class="row justify-content-around">
-                    @foreach (ResourceField resourceField in cityManager.Wood.Fields) {
+                    @foreach (ResourceField resourceField in city.Wood.Fields) {
                         <div class="col-5 mt-2 border border-@HtmlColors.Wood">
-                            <a class="text-@HtmlColors.Wood" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                            <a class="text-@HtmlColors.Wood" 
+                            asp-area="" 
+                            asp-page="/Game/UpgradeField" 
+                            asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>
@@ -66,9 +76,12 @@
             <div class="col-8 text-@HtmlColors.Crop">
                 <div><h3>Crop</h3></div>
                 <div class="row justify-content-around">
-                    @foreach (ResourceField resourceField in cityManager.Crop.Fields) {
+                    @foreach (ResourceField resourceField in city.Crop.Fields) {
                         <div class="col-2 mt-2 mr-2 border border-@HtmlColors.Crop">
-                            <a class="text-@HtmlColors.Crop" asp-area="" asp-page="/Game/UpgradeField" asp-route-id="@resourceField.Id">
+                            <a class="text-@HtmlColors.Crop" 
+                            asp-area="" 
+                            asp-page="/Game/UpgradeField" 
+                            asp-route-id="@resourceField.Id">
                                 <h4>@resourceField.Level</h4>
                             </a>
                         </div>

@@ -12,7 +12,10 @@ namespace BrowserGame.Data
 				CityBuildingType.Wall => 1m,
 				CityBuildingType.Warehouse or CityBuildingType.Granary => 1000m,
 				CityBuildingType.EmptySlot => 0m, // Empty slot has no value.
-				_ => throw new ArgumentException("Target CityBuildingType has no default value", nameof(cityBuildingType)),
+				_ => throw new ArgumentException(
+					"Target CityBuildingType has no default value",
+					nameof(cityBuildingType)
+				),
 			};
 		}
 	}

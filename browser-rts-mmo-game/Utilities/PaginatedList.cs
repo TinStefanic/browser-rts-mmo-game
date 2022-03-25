@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BrowserGame.ModelUtils
+namespace BrowserGame.Utilities
 {
     // Taken from EF Core with Razor Pages tutorial
     // https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/sort-filter-page?view=aspnetcore-6.0#create-the-paginatedlist-class

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Numerics;
 
-namespace BrowserGame.Static
+namespace BrowserGame.Utilities
 {
 	public static class TimeManager
 	{

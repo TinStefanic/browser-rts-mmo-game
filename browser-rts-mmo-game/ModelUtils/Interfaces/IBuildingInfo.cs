@@ -1,4 +1,6 @@
 ﻿
+using BrowserGame.Models;
+
 namespace BrowserGame.ModelUtils
 {
 	public interface IBuildingInfo
@@ -9,7 +11,7 @@ namespace BrowserGame.ModelUtils
 		int IronCost { get; }
 		int WoodCost { get; }
 
-		Task<bool> CanBeBuiltAsync(ICityManager cityManager);
-		TimeSpan GetBuildDuration(ICityManager cityManager);
+		Task<bool> CanBeBuiltAsync(City city);
+		TimeSpan GetBuildDuration(City city);
 	}
 }

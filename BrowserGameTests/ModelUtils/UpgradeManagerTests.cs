@@ -16,14 +16,14 @@ namespace BrowserGame.ModelUtils.Tests
 	public class UpgradeManagerTests
 	{
 		private ApplicationDbContext _context;
-		private ICityManager _cityManager;
+		private City _city;
 		private UpgradeManager _upgradeManager;
 
 		[TestInitialize()]
 		public async Task InitializeAsync()
 		{
 			_context = await TestDbConntextFactory.CreateContextAsync();
-			_cityManager = await CityManager.LoadCityManagerAsync(1, _context);
+			_city = await new ModelFactory(_context).LoadCityAsync(1);
 			_upgradeManager = new UpgradeManager(_context);
 		}
 
@@ -36,30 +36,34 @@ namespace BrowserGame.ModelUtils.Tests
 		[TestMethod()]
 		public async Task ShouldChangeFromNotInProgressTest()
 		{
-			Assert.AreEqual(BuildQueueStatus.Empty, _cityManager.City.BuildQueue.QueueStatus);
-			await _upgradeManager.StartUpgradeAsync(_cityManager.MainBuilding, _cityManager.City);
-			Assert.AreNotEqual(BuildQueueStatus.Empty, _cityManager.City.BuildQueue.QueueStatus);
-			Assert.IsTrue(_cityManager.MainBuilding.IsUpgradeInProgress);
+			Assert.AreEqual(BuildQueueStatus.Empty, _city.BuildQueue.QueueStatus);
+			await _upgradeManager.StartUpgradeAsync(_city.GetMainBuilding(), _city);
+
+			Assert.AreNotEqual(BuildQueueStatus.Empty, _city.BuildQueue.QueueStatus);
+			Assert.IsTrue(_city.GetMainBuilding().IsUpgradeInProgress);
 		}
 
 		[TestMethod()]
 		public async Task ShouldIncreaseLevelBy1Test()
 		{
-			int buildingLevel = _cityManager.Wall.Level;
-			await _upgradeManager.FinishUpgradeAsync(_cityManager.Wall.Id, _cityManager.Wall.BuildingType);
-			Assert.AreEqual(buildingLevel+1, _cityManager.Wall.Level);
+			int buildingLevel = _city.GetWall().Level;
+			await _upgradeManager.FinishUpgradeAsync(_city.GetWall().Id, _city.GetWall().BuildingType);
+
+			Assert.AreEqual(buildingLevel+1, _city.GetWall().Level);
 		}
 
 		[TestMethod()]
 		public async Task ShouldDecreaseBuildingTimeTest()
 		{
-			decimal oldBuildingSpeed = _cityManager.BuildingSpeed;
+			decimal oldBuildingSpeed = _city.GetBuildingSpeed();
+			var buildingConstructor = new BuildingConstructor(_city, _context);
 			// NOTE: This method saves changes to database.
-			Assert.IsTrue(await _cityManager.TryUpgradeAsync(_cityManager.MainBuilding));
+			Assert.IsTrue(await buildingConstructor.TryUpgradeAsync(_city.GetMainBuilding()));
 			// Delay is needed to ensure build completes (even if build duration is 0 seconds).
 			await Task.Delay(50);
-			Assert.IsFalse(await _cityManager.IsBuildInProgressAsync());
-			Assert.IsTrue(oldBuildingSpeed > _cityManager.BuildingSpeed);
+
+			Assert.IsFalse(await _city.IsBuildInProgressAsync(_context));
+			Assert.IsTrue(oldBuildingSpeed > _city.GetBuildingSpeed());
 		}
 	}
 }

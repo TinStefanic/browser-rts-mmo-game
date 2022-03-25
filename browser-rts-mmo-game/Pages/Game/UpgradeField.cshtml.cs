@@ -1,7 +1,7 @@
 using BrowserGame.Data;
 using BrowserGame.ModelUtils;
 using BrowserGame.Models;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -24,14 +24,14 @@ namespace BrowserGame.Pages.Game
         {
             ResourceField resourceField = await _context.ResourceFields.Include(rf => rf.City.Player).FirstOrDefaultAsync(rf => rf.Id == id);
             if (resourceField == null) return NotFound();
-            UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(resourceField.GetUpgradeInfoId());
+            Upgrade upgrade = await _context.Upgrades.FindAsync(resourceField.GetUpgradeId());
 
-            ICityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
-            if (cityManager.NotUsers(User)) return NotFound();
+            City city = await new ModelFactory(_context).LoadCityAsync(resourceField.City.Id);
+            if (city.NotUsers(User)) return NotFound();
 
-            ViewData["CityManager"] = cityManager;
+            ViewData["City"] = city;
             ViewData["ResourceField"] = resourceField;
-            ViewData["UpgradeInfo"] = upgradeInfo;
+            ViewData["Upgrade"] = upgrade;
 
             FieldId = id;
 
@@ -45,13 +45,15 @@ namespace BrowserGame.Pages.Game
                                           .FirstOrDefaultAsync(rf => rf.Id == FieldId);
             if (resourceField == null) return NotFound();
 
-            ICityManager cityManager = await CityManager.LoadCityManagerAsync(resourceField.City.Id, _context);
+            City city = await new ModelFactory(_context).LoadCityAsync(resourceField.City.Id);
 
-            if (cityManager.NotUsers(User))
+            if (city.NotUsers(User))
                 return NotFound();
 
-            if (await cityManager.TryUpgradeAsync(resourceField))
-                return Redirect($"/Game/OuterCity/{cityManager.Id}");
+            var buildingConstructor = new BuildingConstructor(city, _context);
+
+            if (await buildingConstructor.TryUpgradeAsync(resourceField))
+                return Redirect($"/Game/OuterCity/{city.Id}");
             else
                 return Page();
         }

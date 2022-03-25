@@ -7,7 +7,7 @@ namespace BrowserGame.Data
     {
         public static async Task InitializeAsync(ApplicationDbContext context)
         {
-            if (context.UpgradeInfos.Any()) return;
+            if (context.Upgrades.Any()) return;
 
             var upgradeSeeder = new UpgradeSeeder(context);
 

@@ -2,15 +2,15 @@
 
 namespace BrowserGame.ModelUtils
 {
-	public class AvailableCityBuildingsManager : IAvailableCityBuildingsManager
+	public class AvailableCityBuildings : IAvailableCityBuildings
 	{
 		public IEnumerable<CityBuildingType> AvailableBuildings { get; }
 
-		private readonly ICityManager _cityManager;
+		private readonly City _city;
 
-		public AvailableCityBuildingsManager(ICityManager cityManager)
+		public AvailableCityBuildings(City city)
 		{
-			_cityManager = cityManager;
+			_city = city;
 
 			var availableBuildings = new SortedSet<CityBuildingType>();
 
@@ -19,7 +19,7 @@ namespace BrowserGame.ModelUtils
 				availableBuildings.Add((CityBuildingType)i);
 			}
 
-			foreach (CityBuilding cityBuilding in _cityManager.BuildingSlots)
+			foreach (CityBuilding cityBuilding in _city.GetBuildingSlots())
 			{
 				availableBuildings.Remove(cityBuilding.CityBuildingType);
 			}

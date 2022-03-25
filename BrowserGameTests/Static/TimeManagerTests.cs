@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace BrowserGame.Static.Tests
+namespace BrowserGame.Utilities.Tests
 {
 	[TestClass()]
 	public class TimeManagerTests

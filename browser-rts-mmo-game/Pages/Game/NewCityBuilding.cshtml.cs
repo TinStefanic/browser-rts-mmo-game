@@ -14,7 +14,7 @@ namespace BrowserGame.Pages.Game
     public class NewCityBuildingModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private ICityManager _cityManager;
+        private City _city;
 
         public NewCityBuildingModel(ApplicationDbContext context)
         {
@@ -39,13 +39,13 @@ namespace BrowserGame.Pages.Game
 
             if (CityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
 
-            _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding.CityId ?? 0, _context);
+            _city = await new ModelFactory(_context).LoadCityAsync(CityBuilding.CityId ?? 0);
 
-            if (_cityManager.NotUsers(User)) return Forbid();
+            if (_city.NotUsers(User)) return Forbid();
 
-            ViewData["CityManager"] = _cityManager;
+            ViewData["City"] = _city;
 
-            AvailableCityBuildings = new AvailableCityBuildingsManager(_cityManager).AvailableBuildings;
+            AvailableCityBuildings = new AvailableCityBuildings(_city).AvailableBuildings;
 
             return Page();
         }
@@ -56,14 +56,15 @@ namespace BrowserGame.Pages.Game
 
             if (CityBuilding == null) return NotFound();
 
-            _cityManager = await CityManager.LoadCityManagerAsync(CityBuilding?.CityId ?? 0, _context);
+            _city = await new ModelFactory(_context).LoadCityAsync(CityBuilding?.CityId ?? 0);
 
-            if (_cityManager.NotUsers(User)) return Forbid();
+            if (_city.NotUsers(User)) return Forbid();
 
-            if (! new AvailableCityBuildingsManager(_cityManager).IsAvailable(CityBuildingType)) return BadRequest();
+            if (! new AvailableCityBuildings(_city).IsAvailable(CityBuildingType)) return BadRequest();
 
-            if (await _cityManager.TryCreateBuildingAsync(CityBuilding, CityBuildingType))
-                return Redirect($"/Game/InnerCity/{_cityManager.Id}");
+            var buildingConstrutor = new BuildingConstructor(_city, _context);
+            if (await buildingConstrutor.TryCreateBuildingAsync(CityBuilding, CityBuildingType))
+                return Redirect($"/Game/InnerCity/{_city.Id}");
             else
                 return Page();
         }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using Microsoft.EntityFrameworkCore;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using BrowserGame.ModelUtils;
 
 namespace BrowserGame.Pages.Game
@@ -28,7 +28,7 @@ namespace BrowserGame.Pages.Game
 
             if (player == null) return Redirect("/Game/CreatePlayer");
 
-            ViewData["CityManager"] = await CityManager.LoadCityManagerAsync(player.ActiveCityId, _context);
+            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(player.ActiveCityId);
 
             return Page();
         }
@@ -51,8 +51,8 @@ namespace BrowserGame.Pages.Game
             }
 
             Player thisPlayer = await _context.Players.FirstOrDefaultAsync(p => p.UserId == User.GetUserId());
-
             if (thisPlayer == null) return Redirect("/Game/CreatePlayer");
+            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(thisPlayer.ActiveCityId);
 
             Player recipientPlayer = await _context.Players.FirstOrDefaultAsync(p => p.Name == Recipient);
 

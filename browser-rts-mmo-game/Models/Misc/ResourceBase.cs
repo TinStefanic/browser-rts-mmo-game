@@ -1,4 +1,4 @@
-﻿using BrowserGame.Static;
+﻿using BrowserGame.Utilities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BrowserGame.Models.Misc

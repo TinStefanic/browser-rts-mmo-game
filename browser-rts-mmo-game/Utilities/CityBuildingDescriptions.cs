@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace BrowserGame.Static
+namespace BrowserGame.Utilities
 {
-	public static class CityBuildingTypeInfo
+	public static class CityBuildingDescriptions
 	{
 		private static JObject _descriptions;
 

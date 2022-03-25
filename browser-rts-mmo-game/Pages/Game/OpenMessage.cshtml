@@ -1,9 +1,10 @@
 ﻿@page "{id:int}"
 @using BrowserGame.ModelUtils
+@using BrowserGame.Models
 @model BrowserGame.Pages.Game.OpenMessageModel
 
 @{
-    var cityManager = (ICityManager)ViewData["CityManager"];
+    var city = (City)ViewData["City"];
 }
 
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />

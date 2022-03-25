@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ModelUtils;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 
 namespace BrowserGame.Pages.Game
 {
@@ -29,15 +29,15 @@ namespace BrowserGame.Pages.Game
             CityBuilding cityBuilding = await _context.CityBuildings.Include(cb => cb.City.Player).FirstOrDefaultAsync(cb => cb.Id == id);
             if (cityBuilding == null) return NotFound();
 
-            UpgradeInfo upgradeInfo = await _context.UpgradeInfos.FindAsync(cityBuilding.GetUpgradeInfoId());
+            Upgrade upgrade = await _context.Upgrades.FindAsync(cityBuilding.GetUpgradeId());
 
-			ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
+			City city = await new ModelFactory(_context).LoadCityAsync(cityBuilding.City.Id);
 
-            if (cityManager.NotUsers(User)) return Forbid();
+            if (city.NotUsers(User)) return Forbid();
 
-            ViewData["CityManager"] = cityManager;
+            ViewData["City"] = city;
             ViewData["CityBuilding"] = cityBuilding;
-            ViewData["UpgradeInfo"] = upgradeInfo;
+            ViewData["Upgrade"] = upgrade;
 
             CityBuildingId = id;
 
@@ -51,13 +51,15 @@ namespace BrowserGame.Pages.Game
                                           .FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
             if (cityBuilding == null) return NotFound();
 
-            ICityManager cityManager = await CityManager.LoadCityManagerAsync(cityBuilding.City.Id, _context);
+            City city = await new ModelFactory(_context).LoadCityAsync(cityBuilding.City.Id);
 
-            if (cityManager.NotUsers(User))
+            if (city.NotUsers(User))
                 return NotFound();
 
-            if (await cityManager.TryUpgradeAsync(cityBuilding))
-                return Redirect($"/Game/InnerCity/{cityManager.Id}");
+            var buildingConstructor = new BuildingConstructor(city, _context);
+
+            if (await buildingConstructor.TryUpgradeAsync(cityBuilding))
+                return Redirect($"/Game/InnerCity/{city.Id}");
             else
                 return Page();
         }

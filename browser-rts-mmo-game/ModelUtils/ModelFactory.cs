@@ -53,14 +53,20 @@ namespace BrowserGame.ModelUtils
 
 		public async Task<City> LoadCityAsync(int cityId)
 		{
-			return await _context.Cities.Include(c => c.Clay.Fields)
-											.Include(c => c.Wood.Fields)
-											.Include(c => c.Iron.Fields)
-											.Include(c => c.Crop.Fields)
-											.Include(c => c.Player)
-											.Include(c => c.BuildQueue)
-											.Include(c => c.BuildingSlot.CityBuildings)
-											.FirstOrDefaultAsync(m => m.Id == cityId);
+			City city = 
+				await _context.Cities
+				.Include(c => c.Clay.Fields)
+				.Include(c => c.Wood.Fields)
+				.Include(c => c.Iron.Fields)
+				.Include(c => c.Crop.Fields)
+				.Include(c => c.Player)
+				.Include(c => c.BuildQueue)
+				.Include(c => c.BuildingSlot.CityBuildings)
+				.FirstOrDefaultAsync(m => m.Id == cityId);
+
+			await city.UpdateBuildQueueAsync(_context);
+
+			return city;
 		}
 	}
 }

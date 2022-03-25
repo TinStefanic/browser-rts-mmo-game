@@ -1,17 +1,20 @@
 ﻿@page "{id:int}"
 @using BrowserGame.Models
 @using BrowserGame.ModelUtils
-@using BrowserGame.Static
+@using BrowserGame.Utilities
 @model BrowserGame.Pages.Game.UpgradeFieldModel
+@inject IHtmlColors HtmlColors
+@inject ApplicationDbContext DbContext
 
 @{
-    var cityManager = (ICityManager)ViewData["CityManager"];
+    var city = (City)ViewData["City"];
     var resourceField = (ResourceField)ViewData["ResourceField"];
-    var upgrade = (UpgradeInfo)ViewData["UpgradeInfo"];
+    var upgrade = (Upgrade)ViewData["Upgrade"];
 
-    var span = TimeSpan.FromSeconds(cityManager.GetBuildTime(upgrade));
+    var buildingConstructor = new BuildingConstructor(city, DbContext);
+    var span = TimeSpan.FromSeconds(city.GetBuildTimeInSeconds(upgrade));
 
-    var postButtonDisabled = await cityManager.CanUpgradeAsync(upgrade) ? "" : "disabled";
+    var postButtonDisabled = await buildingConstructor.CanUpgradeAsync(upgrade) ? "" : "disabled";
 }
 
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
@@ -42,8 +45,14 @@ else
           Additional crop upkeep @upgrade.AdditionalCropUpkeep
         </div>
         <div>
-            Current production: <span class="text-info">@(resourceField.ProductionPerHour * TimeManager.Speed)</span> <br>
-            Production after upgrade: <span class="text-info">@((upgrade.ValueChangeInt + resourceField.ProductionPerHour) * TimeManager.Speed)</span>.
+            Current production: 
+            <span class="text-info">@(resourceField.ProductionPerHour * TimeManager.Speed)</span>
+            <br>
+
+            Production after upgrade: 
+            <span class="text-info">
+                @((upgrade.ValueChangeInt + resourceField.ProductionPerHour) * TimeManager.Speed)
+            </span>.
         </div>
         <div>
         Build time: @span.ToHtmlDisplay()

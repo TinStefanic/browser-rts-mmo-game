@@ -1,6 +1,6 @@
 ﻿using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 
 namespace BrowserGame.ModelUtils
 {
@@ -13,22 +13,25 @@ namespace BrowserGame.ModelUtils
 		public int CropCost => _upgradeInfo.CropCost;
 
 		private readonly CityBuildingType _cityBuildingType;
-		private readonly UpgradeInfo _upgradeInfo;
+		private readonly Upgrade _upgradeInfo;
+		private readonly ApplicationDbContext _context;
 
-		public BuildingInfo(CityBuildingType cityBuildingType, UpgradeInfo upgradeInfo)
+		public BuildingInfo(CityBuildingType cityBuildingType, Upgrade upgrade, ApplicationDbContext context)
 		{
 			_cityBuildingType = cityBuildingType;
-			_upgradeInfo = upgradeInfo;
+			_upgradeInfo = upgrade;
+			_context = context;
 		}
 
-		public TimeSpan GetBuildDuration(ICityManager cityManager)
+		public TimeSpan GetBuildDuration(City city)
 		{
-			return TimeSpan.FromSeconds(cityManager.GetBuildTime(_upgradeInfo));
+			return TimeSpan.FromSeconds(city.GetBuildTimeInSeconds(_upgradeInfo));
 		}
 
-		public async Task<bool> CanBeBuiltAsync(ICityManager cityManager)
+		public async Task<bool> CanBeBuiltAsync(City city)
 		{
-			return await cityManager.CanUpgradeAsync(_upgradeInfo);
+			var buildingConstructor = new BuildingConstructor(city, _context);
+			return await buildingConstructor.CanUpgradeAsync(_upgradeInfo);
 		}
 	}
 }

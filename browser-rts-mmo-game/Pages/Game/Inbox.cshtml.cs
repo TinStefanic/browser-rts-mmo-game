@@ -1,7 +1,7 @@
 using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ModelUtils;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +27,7 @@ namespace BrowserGame.Pages.Game
 
             if (player == null) return Redirect("/Game/CreatePlayer");
 
-            ViewData["CityManager"] = await CityManager.LoadCityManagerAsync(player.ActiveCityId, _context);
+            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(player.ActiveCityId);
 
             var pageSize = _configuration.GetValue("PageSize", 10);
             Messages = await PaginatedList<Message>.CreateAsync(

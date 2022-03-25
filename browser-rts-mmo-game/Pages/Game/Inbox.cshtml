@@ -1,8 +1,9 @@
 ﻿@page
 @using BrowserGame.ModelUtils
+@using BrowserGame.Models
 @model BrowserGame.Pages.Game.InboxModel
 @{
-    var cityManager = (ICityManager)ViewData["CityManager"];
+    var city = (City)ViewData["City"];
 }
 
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />

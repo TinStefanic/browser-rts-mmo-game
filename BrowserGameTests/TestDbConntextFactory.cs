@@ -1,5 +1,5 @@
 ﻿using BrowserGame.Data;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

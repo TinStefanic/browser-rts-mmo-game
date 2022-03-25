@@ -1,16 +1,16 @@
-﻿using BrowserGame.Static;
+﻿using BrowserGame.Utilities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BrowserGame.Models
 {
-	public class UpgradeInfo
+	public class Upgrade
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.None)]
 		[StringLength(400)]
 		public string Id
 		{
-			get => GameSession.GetUpgradeInfoId(BuildingName, Level);
+			get => IdentityUtilities.GetUpgradeId(BuildingName, Level);
 			private set { ; }
 		}
 

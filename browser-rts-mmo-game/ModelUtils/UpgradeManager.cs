@@ -1,7 +1,7 @@
 ﻿using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.Models.Misc;
-using BrowserGame.Static;
+using BrowserGame.Utilities;
 
 namespace BrowserGame.ModelUtils
 {
@@ -19,7 +19,7 @@ namespace BrowserGame.ModelUtils
 
 		public async Task StartUpgradeAsync(IBuilding building, City city)
 		{
-			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(building.GetUpgradeInfoId());
+			Upgrade upgrade = await _context.Upgrades.FindAsync(building.GetUpgradeId());
 
 			building.IsUpgradeInProgress = true;
 
@@ -44,7 +44,7 @@ namespace BrowserGame.ModelUtils
 				building = await _context.CityBuildings.FindAsync(targetId);
 			}
 
-			UpgradeInfo upgrade = await _context.UpgradeInfos.FindAsync(building.GetUpgradeInfoId());
+			Upgrade upgrade = await _context.Upgrades.FindAsync(building.GetUpgradeId());
 
 			building.Value += upgrade.ValueChangeDecimal;
 			building.CropUpkeep += upgrade.AdditionalCropUpkeep;

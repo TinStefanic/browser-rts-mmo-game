@@ -13,7 +13,7 @@ namespace BrowserGame.Utilities.Tests
 	public class TimeManagerTests
 	{
 		[TestMethod()]
-		public async Task ElapsedHoursShouldBeGreaterThanZeroTest()
+		public async Task Elapsed_Hours_Should_Be_Greater_Than_Zero_Test()
 		{
 			typeof(TimeManager).GetField("_speed", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, null);
 

@@ -13,7 +13,7 @@ namespace BrowserGame.Utilities.Tests
 	public class CityBuildingTypeInfoTests
 	{
 		[TestMethod()]
-		public void MainBuildingAndWallShouldHaveDifferentDescriptionsTest()
+		public void Main_Building_And_Wall_Should_Have_Different_Descriptions_Test()
 		{
 			string mainBuildingDescripion = CityBuildingType.MainBuilding.Description();
 			string wallDescripion = CityBuildingType.Wall.Description();
@@ -24,7 +24,7 @@ namespace BrowserGame.Utilities.Tests
 		}
 
 		[TestMethod()]
-		public void GranaryAndWarehouseShouldHaveSameValueDescriptionsTest()
+		public void Granary_And_Warehouse_Should_Have_Same_Value_Descriptions_Test()
 		{
 			string granaryValueDescripion = CityBuildingType.Granary.ValueDescription();
 			string warehouseValueDescription = CityBuildingType.Warehouse.ValueDescription();
@@ -35,7 +35,7 @@ namespace BrowserGame.Utilities.Tests
 		}
 
 		[TestMethod()]
-		public void MainBuildingAndWallShouldHaveDifferentValueDescriptionsTest()
+		public void Main_Building_And_Wall_Should_Have_Different_Value_Descriptions_Test()
 		{
 			string mainBuildingValueDescripion = CityBuildingType.MainBuilding.ValueDescription();
 			string wallValueDescripion = CityBuildingType.Wall.ValueDescription();
@@ -46,7 +46,7 @@ namespace BrowserGame.Utilities.Tests
 		}
 
 		[TestMethod()]
-		public void NoneShouldBeNullTest()
+		public void None_Should_Be_Null_Test()
 		{
 			foreach (CityBuildingType cityBuildingType in Enum.GetValues(typeof(CityBuildingType)))
 			{

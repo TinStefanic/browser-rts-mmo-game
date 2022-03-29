@@ -13,7 +13,7 @@ namespace BrowserGame.Data.Tests
 	public class DefaultValuesTests
 	{
 		[TestMethod()]
-		public void AllDefaultValuesShouldBeImplementedTest()
+		public void All_Default_Values_Should_Be_Implemented_Test()
 		{
 			foreach (CityBuildingType cityBuildingType in Enum.GetValues(typeof(CityBuildingType)))
 			{

@@ -15,7 +15,7 @@ namespace BrowserGame.ModelUtils.Tests
 	public class AvailableCityBuildingsTests
 	{
 		[TestMethod()]
-		public async Task ShouldReturnWarehouseAndNotWallTest()
+		public async Task Should_Return_Warehouse_And_Not_Wall_Test()
 		{
 			using var context = await TestDbConntextFactory.CreateContextAsync();
 			var city = await new ModelFactory(context).LoadCityAsync(1);

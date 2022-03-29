@@ -34,7 +34,7 @@ namespace BrowserGame.ModelUtils.Tests
 		}
 
 		[TestMethod()]
-		public async Task ShouldChangeFromNotInProgressTest()
+		public async Task Should_Change_From_Not_In_Progress_Test()
 		{
 			Assert.AreEqual(BuildQueueStatus.Empty, _city.BuildQueue.QueueStatus);
 			await _upgradeManager.StartUpgradeAsync(_city.GetMainBuilding(), _city);
@@ -44,7 +44,7 @@ namespace BrowserGame.ModelUtils.Tests
 		}
 
 		[TestMethod()]
-		public async Task ShouldIncreaseLevelBy1Test()
+		public async Task Should_Increase_Level_By_1_Test()
 		{
 			int buildingLevel = _city.GetWall().Level;
 			await _upgradeManager.FinishUpgradeAsync(_city.GetWall().Id, _city.GetWall().BuildingType);
@@ -53,7 +53,7 @@ namespace BrowserGame.ModelUtils.Tests
 		}
 
 		[TestMethod()]
-		public async Task ShouldDecreaseBuildingTimeTest()
+		public async Task Should_Decrease_Building_Time_Test()
 		{
 			decimal oldBuildingSpeed = _city.GetBuildingSpeed();
 			var buildingConstructor = new BuildingConstructor(_city, _context);

@@ -36,7 +36,7 @@ namespace BrowserGame.ModelUtils.Tests
 		}
 
 		[TestMethod()]
-		public async Task ShouldUpgradeCropFieldToLevel1Test()
+		public async Task Should_Upgrade_Crop_Field_To_Level_1_Test()
 		{
 			var cropField = _city.Crop.Fields.First();
 			var upgrade = await _context.Upgrades.FindAsync(cropField.GetUpgradeId());
@@ -47,7 +47,7 @@ namespace BrowserGame.ModelUtils.Tests
 		}
 
 		[TestMethod()]
-		public async Task EveryBuildingsUpgradeShouldBeInDatabaseTest()
+		public async Task Every_Buildings_Upgrade_Should_Be_In_Database_Test()
 		{
 			foreach (CityBuildingType cityBuildingType in Enum.GetValues(typeof(CityBuildingType)))
 			{

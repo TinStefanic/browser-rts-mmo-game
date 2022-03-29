@@ -25,7 +25,7 @@ namespace BrowserGame.Utilities
 
 		private static int SpeedFromJson()
 		{
-			string descriptonsPath = "gamesettings.json";
+			string descriptonsPath = "appsettings.json";
 			return ((int)JObject.Parse(File.ReadAllText(descriptonsPath))["GameSpeed"]);
 		}
 	}

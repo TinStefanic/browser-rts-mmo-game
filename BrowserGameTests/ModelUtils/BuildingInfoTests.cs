@@ -15,7 +15,7 @@ namespace BrowserGame.ModelUtils.Tests
 	public class BuildingInfoTests
 	{
 		[TestMethod()]
-		public async Task BuildDurationIsZeroTest()
+		public async Task Build_Duration_Is_Zero_Test()
 		{
 			using var context = await TestDbConntextFactory.CreateContextAsync();
 			var buildingInfo = 
@@ -34,7 +34,7 @@ namespace BrowserGame.ModelUtils.Tests
 		}
 
 		[TestMethod()]
-		public async Task CanBeBuiltAsyncShouldBeTrueTest()
+		public async Task Can_Be_Built_Async_Should_Be_True_Test()
 		{
 			using var context = await TestDbConntextFactory.CreateContextAsync();
 			var buildingInfo = 

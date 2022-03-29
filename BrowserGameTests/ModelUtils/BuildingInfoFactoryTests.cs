@@ -14,7 +14,7 @@ namespace BrowserGame.ModelUtils.Tests
 	public class BuildingInfoFactoryTests
 	{
 		[TestMethod()]
-		public async Task ShouldCreateNewBuildingInfoForWallTest()
+		public async Task Should_Create_New_Building_Info_For_Wall_Test()
 		{
 			using var context = await TestDbConntextFactory.CreateContextAsync();
 			var buildingInfo = 

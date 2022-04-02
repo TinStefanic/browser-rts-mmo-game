@@ -21,7 +21,7 @@ namespace BrowserGame.ModelUtils.Tests
 		public async Task InitializeAsync()
 		{
 			_context = await TestDbConntextFactory.CreateContextAsync();
-			_city = await new ModelFactory(_context).LoadCityAsync(1);
+			_city = await new ModelFactory(_context, TestConfigurationFactory.CreateConfiguration()).LoadCityAsync(1);
 		}
 
 		[TestCleanup()]

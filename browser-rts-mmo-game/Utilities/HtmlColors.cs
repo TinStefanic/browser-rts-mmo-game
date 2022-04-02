@@ -1,4 +1,6 @@
-﻿namespace BrowserGame.Utilities
+﻿using BrowserGame.ModelUtils;
+
+namespace BrowserGame.Utilities
 {
 	public class HtmlColors : IHtmlColors
 	{
@@ -10,5 +12,10 @@
 		public string BuildingSlotBuilding => "warning";
 		public string Wall => "secondary";
 		public string EmptySlot => "success";
+
+		public string GetColor(MapLocationType mapLocationType)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -7,10 +7,12 @@ namespace BrowserGame.ModelUtils
 	public class ModelFactory : IModelFactory
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _configuration;
 
-		public ModelFactory(ApplicationDbContext context)
+		public ModelFactory(ApplicationDbContext context, IConfiguration configuration)
 		{
 			_context = context;
+			_configuration = configuration;
 		}
 
 		public async Task<Player> CreateNewPlayerAsync(string playerName, string capitalName, string userId)
@@ -20,7 +22,6 @@ namespace BrowserGame.ModelUtils
 				UserId = userId,
 				Name = playerName
 			};
-
 			_context.Players.Add(newPlayer);
 
 			var newCity = new City()
@@ -28,9 +29,23 @@ namespace BrowserGame.ModelUtils
 				Name = capitalName,
 				Player = newPlayer
 			};
-
 			_context.Cities.Add(newCity);
 
+			AddCityPartsToContext(newCity);
+
+			var coordinates = new Map(_context, _configuration);
+			(newCity.XCoord, newCity.YCoord) = await coordinates.RandomFreeCoordinatesAsync();
+
+			newPlayer.Capital = newCity;
+			newPlayer.ActiveCityId = newCity.Id;
+
+			await _context.SaveChangesAsync();
+
+			return newPlayer;
+		}
+
+		private void AddCityPartsToContext(City newCity)
+		{
 			_context.Clays.Add(newCity.Clay);
 			_context.ResourceFields.AddRange(newCity.Clay.Fields);
 			_context.Irons.Add(newCity.Iron);
@@ -43,12 +58,6 @@ namespace BrowserGame.ModelUtils
 			_context.BuildQueues.Add(newCity.BuildQueue);
 			_context.BuildingSlots.Add(newCity.BuildingSlot);
 			_context.CityBuildings.AddRange(newCity.BuildingSlot.CityBuildings);
-
-			newPlayer.Capital = newCity;
-			newPlayer.ActiveCityId = newCity.Id;
-			await _context.SaveChangesAsync();
-
-			return newPlayer;
 		}
 
 		public async Task<City> LoadCityAsync(int cityId)

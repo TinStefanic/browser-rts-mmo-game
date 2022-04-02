@@ -14,12 +14,14 @@ namespace BrowserGame.Pages.Game
     public class NewCityBuildingModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private City _city;
+		private readonly IConfiguration _configuration;
+		private City _city;
 
-        public NewCityBuildingModel(ApplicationDbContext context)
+        public NewCityBuildingModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-            BuildingInfoFactory = new BuildingInfoFactory(_context);
+			_configuration = configuration;
+			BuildingInfoFactory = new BuildingInfoFactory(_context);
         }
 
         public CityBuilding CityBuilding { get; set; }
@@ -39,7 +41,7 @@ namespace BrowserGame.Pages.Game
 
             if (CityBuilding?.CityBuildingType != CityBuildingType.EmptySlot) return BadRequest();
 
-            _city = await new ModelFactory(_context).LoadCityAsync(CityBuilding.CityId ?? 0);
+            _city = await new ModelFactory(_context, _configuration).LoadCityAsync(CityBuilding.CityId ?? 0);
 
             if (_city.NotUsers(User)) return Forbid();
 
@@ -56,7 +58,7 @@ namespace BrowserGame.Pages.Game
 
             if (CityBuilding == null) return NotFound();
 
-            _city = await new ModelFactory(_context).LoadCityAsync(CityBuilding?.CityId ?? 0);
+            _city = await new ModelFactory(_context, _configuration).LoadCityAsync(CityBuilding?.CityId ?? 0);
 
             if (_city.NotUsers(User)) return Forbid();
 

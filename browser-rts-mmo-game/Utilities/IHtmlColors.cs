@@ -1,4 +1,6 @@
-﻿namespace BrowserGame.Utilities
+﻿using BrowserGame.ModelUtils;
+
+namespace BrowserGame.Utilities
 {
 	public interface IHtmlColors
 	{
@@ -10,5 +12,7 @@
 		string MainBuilding { get; }
 		string Wall { get; }
 		string Wood { get; }
+
+		string GetColor(MapLocationType mapLocationType);
 	}
 }

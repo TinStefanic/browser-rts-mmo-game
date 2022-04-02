@@ -15,11 +15,13 @@ namespace BrowserGame.Pages.Game
     public class UpgradeCityBuildingModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _configuration;
 
-        public UpgradeCityBuildingModel(ApplicationDbContext context)
+		public UpgradeCityBuildingModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+			_configuration = configuration;
+		}
 
         [BindProperty]
         public int CityBuildingId { get; set; }
@@ -31,7 +33,7 @@ namespace BrowserGame.Pages.Game
 
             Upgrade upgrade = await _context.Upgrades.FindAsync(cityBuilding.GetUpgradeId());
 
-			City city = await new ModelFactory(_context).LoadCityAsync(cityBuilding.City.Id);
+			City city = await new ModelFactory(_context, _configuration).LoadCityAsync(cityBuilding.City.Id);
 
             if (city.NotUsers(User)) return Forbid();
 
@@ -51,7 +53,7 @@ namespace BrowserGame.Pages.Game
                                           .FirstOrDefaultAsync(cb => cb.Id == CityBuildingId);
             if (cityBuilding == null) return NotFound();
 
-            City city = await new ModelFactory(_context).LoadCityAsync(cityBuilding.City.Id);
+            City city = await new ModelFactory(_context, _configuration).LoadCityAsync(cityBuilding.City.Id);
 
             if (city.NotUsers(User))
                 return NotFound();

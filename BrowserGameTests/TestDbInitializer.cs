@@ -14,7 +14,7 @@ namespace BrowserGameTests
 	{
 		public static async Task SeedAsync(ApplicationDbContext context)
 		{
-			var modelFactory = new ModelFactory(context);
+			var modelFactory = new ModelFactory(context, TestConfigurationFactory.CreateConfiguration());
 
 			if (context.Players.Any()) return;
 

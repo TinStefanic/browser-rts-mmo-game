@@ -18,7 +18,8 @@ namespace BrowserGame.ModelUtils.Tests
 		public async Task Should_Return_Warehouse_And_Not_Wall_Test()
 		{
 			using var context = await TestDbConntextFactory.CreateContextAsync();
-			var city = await new ModelFactory(context).LoadCityAsync(1);
+			var city = 
+				await new ModelFactory(context, TestConfigurationFactory.CreateConfiguration()).LoadCityAsync(1);
 			var availableCityBuildings = new AvailableCityBuildings(city);
 
 			Assert.IsTrue(availableCityBuildings.IsAvailable(CityBuildingType.Warehouse));

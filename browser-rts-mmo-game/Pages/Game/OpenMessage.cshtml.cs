@@ -15,11 +15,13 @@ namespace BrowserGame.Pages.Game
     public class OpenMessageModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _configuration;
 
-        public OpenMessageModel(ApplicationDbContext context)
+		public OpenMessageModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+			_configuration = configuration;
+		}
 
         public Message Message { get; set; }
         public int? PageIndex { get; set; }
@@ -40,7 +42,7 @@ namespace BrowserGame.Pages.Game
 
 			Player player = await _context.Players.FirstOrDefaultAsync(p => p.UserId == User.GetUserId());
             if (player == null) return Redirect("./CreatePlayer");
-            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(player.ActiveCityId);
+            ViewData["City"] = await new ModelFactory(_context, _configuration).LoadCityAsync(player.ActiveCityId);
 
             return Page();
         }

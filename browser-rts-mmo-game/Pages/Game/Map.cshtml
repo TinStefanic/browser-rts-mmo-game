@@ -1,0 +1,36 @@
+﻿@page
+@using BrowserGame.ModelUtils
+@using BrowserGame.Utilities
+@model BrowserGame.Pages.Game.MapModel
+@inject IConfiguration Configuration
+@inject IHtmlColors HtmlColors
+
+@{
+    int mapDisplayRadius = Configuration.GetValue("MapDisplayRadius", 2);
+}
+
+<partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
+
+@for (int deltaX = -mapDisplayRadius; deltaX <= mapDisplayRadius; ++deltaX)
+{
+    <div class="row text-center justify-content-center">
+        @for (int deltaY = -mapDisplayRadius; deltaY <= mapDisplayRadius; ++deltaY)
+        {
+            var mapLocation = await Model.Map.GetMapLocationAtAsync(Model.XCoord + deltaX, Model.YCoord + deltaY);
+            var mapLocationType = mapLocation.GetMapLocationType(Model.Player);
+            <div class="col-2 border border-@HtmlColors.GetColor(mapLocationType)">
+                <a asp-area="" 
+                asp-page="/Game/Map" 
+                asp-route-x="@mapLocation.XCoord"
+                asp-route-y="@mapLocation.YCoord"
+                class="d-block text-@HtmlColors.GetColor(mapLocationType)">
+                    <span class="d-none d-md-block">
+                        @mapLocation.GetCityNameOrEmpty()
+                    </span>
+                </a>
+            </div>
+        }
+    </div>
+}
+
+<partial name="./Shared/_CommonBuildProgress" view-data="ViewData"/>

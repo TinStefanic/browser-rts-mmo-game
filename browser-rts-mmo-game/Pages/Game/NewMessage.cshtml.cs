@@ -16,11 +16,13 @@ namespace BrowserGame.Pages.Game
     public class NewMessageModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _configuration;
 
-        public NewMessageModel(ApplicationDbContext context)
+		public NewMessageModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+			_configuration = configuration;
+		}
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -28,7 +30,7 @@ namespace BrowserGame.Pages.Game
 
             if (player == null) return Redirect("/Game/CreatePlayer");
 
-            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(player.ActiveCityId);
+            ViewData["City"] = await new ModelFactory(_context, _configuration).LoadCityAsync(player.ActiveCityId);
 
             return Page();
         }
@@ -52,7 +54,7 @@ namespace BrowserGame.Pages.Game
 
             Player thisPlayer = await _context.Players.FirstOrDefaultAsync(p => p.UserId == User.GetUserId());
             if (thisPlayer == null) return Redirect("/Game/CreatePlayer");
-            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(thisPlayer.ActiveCityId);
+            ViewData["City"] = await new ModelFactory(_context, _configuration).LoadCityAsync(thisPlayer.ActiveCityId);
 
             Player recipientPlayer = await _context.Players.FirstOrDefaultAsync(p => p.Name == Recipient);
 

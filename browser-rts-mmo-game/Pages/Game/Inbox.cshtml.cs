@@ -27,7 +27,7 @@ namespace BrowserGame.Pages.Game
 
             if (player == null) return Redirect("/Game/CreatePlayer");
 
-            ViewData["City"] = await new ModelFactory(_context).LoadCityAsync(player.ActiveCityId);
+            ViewData["City"] = await new ModelFactory(_context, _configuration).LoadCityAsync(player.ActiveCityId);
 
             var pageSize = _configuration.GetValue("PageSize", 10);
             Messages = await PaginatedList<Message>.CreateAsync(

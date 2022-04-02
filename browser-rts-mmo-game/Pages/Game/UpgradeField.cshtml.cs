@@ -11,11 +11,13 @@ namespace BrowserGame.Pages.Game
     public class UpgradeFieldModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _configuration;
 
-        public UpgradeFieldModel(ApplicationDbContext context)
+		public UpgradeFieldModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+			_configuration = configuration;
+		}
 
         [BindProperty]
         public int FieldId { get; set; }
@@ -26,7 +28,7 @@ namespace BrowserGame.Pages.Game
             if (resourceField == null) return NotFound();
             Upgrade upgrade = await _context.Upgrades.FindAsync(resourceField.GetUpgradeId());
 
-            City city = await new ModelFactory(_context).LoadCityAsync(resourceField.City.Id);
+            City city = await new ModelFactory(_context, _configuration).LoadCityAsync(resourceField.City.Id);
             if (city.NotUsers(User)) return NotFound();
 
             ViewData["City"] = city;
@@ -45,7 +47,7 @@ namespace BrowserGame.Pages.Game
                                           .FirstOrDefaultAsync(rf => rf.Id == FieldId);
             if (resourceField == null) return NotFound();
 
-            City city = await new ModelFactory(_context).LoadCityAsync(resourceField.City.Id);
+            City city = await new ModelFactory(_context, _configuration).LoadCityAsync(resourceField.City.Id);
 
             if (city.NotUsers(User))
                 return NotFound();

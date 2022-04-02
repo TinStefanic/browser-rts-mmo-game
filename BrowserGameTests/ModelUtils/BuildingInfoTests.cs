@@ -24,7 +24,10 @@ namespace BrowserGame.ModelUtils.Tests
 			var buildDuration =
 				Convert.ToInt32(
 					buildingInfo.GetBuildDuration(
-						await new ModelFactory(context).LoadCityAsync(1)
+						await new ModelFactory(
+							context, 
+							TestConfigurationFactory.CreateConfiguration()
+						).LoadCityAsync(1)
 					).TotalSeconds
 				);
 
@@ -39,7 +42,8 @@ namespace BrowserGame.ModelUtils.Tests
 			using var context = await TestDbConntextFactory.CreateContextAsync();
 			var buildingInfo = 
 				await new BuildingInfoFactory(context).CreateNewBuildingInfoAsync(CityBuildingType.Warehouse);
-			var city = await new ModelFactory(context).LoadCityAsync(1);
+			var city = 
+				await new ModelFactory(context, TestConfigurationFactory.CreateConfiguration()).LoadCityAsync(1);
 
 			Assert.IsTrue(await buildingInfo.CanBeBuiltAsync(city));
 		}

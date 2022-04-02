@@ -17,12 +17,14 @@ namespace BrowserGame.Pages.Game
     public class CreatePlayerModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private readonly IModelFactory _modelFactory;
+		private readonly IConfiguration _configuration;
+		private readonly IModelFactory _modelFactory;
 
-        public CreatePlayerModel(ApplicationDbContext context)
+        public CreatePlayerModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-            _modelFactory = new ModelFactory(_context);
+			_configuration = configuration;
+			_modelFactory = new ModelFactory(_context, _configuration);
         }
 
         public async Task<IActionResult> OnGetAsync()

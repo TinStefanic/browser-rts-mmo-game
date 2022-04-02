@@ -28,6 +28,10 @@ namespace BrowserGame.Models
 		public virtual BuildingSlot BuildingSlot { get; set; }
 
 		public virtual BuildQueue BuildQueue { get; set; }
+
+		public int XCoord { get; set; }
+		public int YCoord { get; set; }
+
 		public City()
 		{
 			Clay = new Clay(4, this);

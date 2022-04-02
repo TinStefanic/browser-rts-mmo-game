@@ -15,11 +15,13 @@ namespace BrowserGame.Pages.Game
     public class OuterCityModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _configuration;
 
-        public OuterCityModel(ApplicationDbContext context)
+		public OuterCityModel(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+			_configuration = configuration;
+		}
 
         public async Task<IActionResult> OnGetAsync(int? recivedId)
         {
@@ -30,7 +32,7 @@ namespace BrowserGame.Pages.Game
 
             int id = recivedId ?? player.ActiveCityId;
 
-            City city = await new ModelFactory(_context).LoadCityAsync(id);
+            City city = await new ModelFactory(_context, _configuration).LoadCityAsync(id);
 
             if (city.NotUsers(User))
             {

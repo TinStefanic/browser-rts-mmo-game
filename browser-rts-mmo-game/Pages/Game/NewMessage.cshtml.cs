@@ -35,18 +35,17 @@ namespace BrowserGame.Pages.Game
             return Page();
         }
 
-        [BindProperty]
-        public string Recipient { get; set; }
-        [BindProperty]
-        public string Title { get; set; }
-        [BindProperty]
-        public string MessageBody { get; set; }
-
         public string VerificationErrorMessage { get; set; }
-        public Message Message { get; set; } // For verification only.
+
+        [BindProperty]
+        public Message Message { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            string recipient = Message.RecipientName;
+            string title = Message.Title;
+            string messageBody = Message.MessageBody;
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -56,20 +55,20 @@ namespace BrowserGame.Pages.Game
             if (thisPlayer == null) return Redirect("/Game/CreatePlayer");
             ViewData["City"] = await new ModelFactory(_context, _configuration).LoadCityAsync(thisPlayer.ActiveCityId);
 
-            Player recipientPlayer = await _context.Players.FirstOrDefaultAsync(p => p.Name == Recipient);
+            Player recipientPlayer = await _context.Players.FirstOrDefaultAsync(p => p.Name == recipient);
 
             if (recipientPlayer == null)
 			{
-                VerificationErrorMessage = $"Player named {Recipient} doesn't exist";
+                VerificationErrorMessage = $"Player named {recipient} doesn't exist";
                 return Page();
 			}
 
             var message = new Message()
             {
-                RecipientName = Recipient,
+                RecipientName = recipient,
                 RecipientId = recipientPlayer.Id,
-                Title = Title,
-                MessageBody = MessageBody,
+                Title = title,
+                MessageBody = messageBody,
                 SenderName = thisPlayer.Name,
                 SenderId = thisPlayer.Id,
                 SentAt = DateTime.Now,

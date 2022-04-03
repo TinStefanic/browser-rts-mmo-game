@@ -12,23 +12,23 @@
 <div class="row justify-content-center text-center">
     <div class="col-md-4">
         <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (!string.IsNullOrEmpty(Model.VerificationErrorMessage)) {
                 <div class="text-danger">@Model.VerificationErrorMessage</div>
             }
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Message.RecipientName" class="control-label"></label>
-                <input asp-for="Recipient" class="form-control" />
+                <input asp-for="Message.RecipientName" class="form-control" />
                 <span asp-validation-for="Message.RecipientName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Message.Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Message.Title" class="form-control" />
                 <span asp-validation-for="Message.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Message.MessageBody" class="control-label"></label>
-                <textarea asp-for="MessageBody" class="form-control" text-wrap:normal" type="text" rows="8"></textarea>
+                <textarea asp-for="Message.MessageBody" class="form-control" text-wrap:normal" type="text" rows="8"></textarea>
                 <span asp-validation-for="Message.MessageBody" class="text-danger"></span>
             </div>
             <div class="form-group">

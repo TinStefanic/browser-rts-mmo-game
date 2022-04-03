@@ -10,19 +10,30 @@
 <partial name="./Shared/_CommonGameNavigation" view-data="ViewData" />
 
 <div class="row justify-content-center text-center">
-    <div class="col-md-4">
-        <div>
-            @Html.DisplayNameFor(model => model.Message.SenderName):
-            @Html.DisplayFor(model => model.Message.SenderName)
-        </div>
-        <div>
-            @Html.DisplayNameFor(model => model.Message.Title):
-            @Html.DisplayFor(model => model.Message.Title)
-        </div>
-        <div>
-            @Html.DisplayNameFor(model => model.Message.MessageBody): <br />
-            @Html.DisplayFor(model => model.Message.MessageBody)
-        </div>
+    <div class="col-md-5">
+        <table class="text-center w-100 table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Message.SenderName):
+                        @Html.DisplayFor(model => model.Message.SenderName)
+                    </th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayFor(model => model.Message.Title)
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.Message.MessageBody)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="pt-5">

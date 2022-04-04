@@ -40,12 +40,12 @@ namespace BrowserGame.ModelUtils
 			{
 				if (!coordsInUseSet.Contains(Tuple.Create(x, y)))
 				{
-					if (numUnusedFound++ == targetUnusedIndex) break;
-					
-					if (++y == _mapHeight)
-					{
-						++x; y = 0;
-					}
+					if (numUnusedFound++ == targetUnusedIndex) return (x, y);
+				}
+
+				if (++y == _mapHeight)
+				{
+					++x; y = 0;
 				}
 			}
 

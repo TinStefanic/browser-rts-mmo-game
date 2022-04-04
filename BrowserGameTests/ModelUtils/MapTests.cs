@@ -37,7 +37,10 @@ namespace BrowserGame.ModelUtils.Tests
 		[TestMethod()]
 		public async Task Returned_Coordinates_Should_Be_Different_From_Existing_City_Test()
 		{
-			Assert.AreNotEqual((_city.XCoord, _city.YCoord), await _map.RandomFreeCoordinatesAsync());
+			for (int i = 0; i < 100; ++i)
+			{
+				Assert.AreNotEqual((_city.XCoord, _city.YCoord), await _map.RandomFreeCoordinatesAsync());
+			}
 		}
 
 		[TestMethod()]

@@ -8,7 +8,7 @@
 @if (await city.IsBuildInProgressAsync(DbContext)) {
     <div class="text-center pt-5 text-info">
         Currently building level @city.BuildQueue.TargetLevel @city.BuildQueue.TargetName,
-        building will complete at @(city.BuildQueue.CompletionTime).
+        construction will complete at @(city.BuildQueue.CompletionTime).
     </div>
 } 
 

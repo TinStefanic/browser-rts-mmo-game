@@ -18,14 +18,16 @@
         {
             var mapLocation = await Model.Map.GetMapLocationAtAsync(Model.XCoord + deltaX, Model.YCoord + deltaY);
             var mapLocationType = mapLocation.GetMapLocationType(Model.Player);
-            <div class="col-2 border border-@HtmlColors.GetColor(mapLocationType)">
+            <div class="col-2 col-md-1 border border-@HtmlColors.GetColor(mapLocationType)">
                 <a asp-area="" 
                 asp-page="/Game/Map" 
                 asp-route-x="@mapLocation.XCoord"
                 asp-route-y="@mapLocation.YCoord"
+                data-toggle="tooltip" 
+                title="@mapLocation.GetCityNameOrEmpty()"
                 class="d-block text-@HtmlColors.GetColor(mapLocationType)">
-                    <span class="d-none d-md-block">
-                        @mapLocation.GetCityNameOrEmpty()
+                    <span class="d-block text-truncate">
+                        @mapLocation.GetCityNameOrEmpty() <br>
                     </span>
                 </a>
             </div>

@@ -24,10 +24,15 @@
     <div class="col-3"><h3>
         <a class="text-primary" asp-area="" asp-page="/Game/InnerCity" asp-route-id="@city.Id">Inner City</a>
     </h3></div>
+    <div class="col-3"><h3>
+        <a class="text-primary" asp-area="" asp-page="/Game/Map" asp-route-x="@city.XCoord" asp-route-y="@city.YCoord">
+            Map   
+        </a>
+    </h3></div>
     <div class="col-3"><h3><a class="@textColor" asp-area="" asp-page="/Game/Inbox">Inbox</a></h3></div>
 </div>
 
-<div class="text-center">
+<div class="text-center d-block text-truncate" data-toggle="tooltip" title="@city.Name">
     <h1>@city.Name</h1>
 </div>
 

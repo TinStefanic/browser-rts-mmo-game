@@ -15,7 +15,13 @@ namespace BrowserGame.Utilities
 
 		public string GetColor(MapLocationType mapLocationType)
 		{
-			throw new NotImplementedException();
+			return mapLocationType switch
+			{
+				MapLocationType.Neutral => "warning",
+				MapLocationType.Owned => "primary",
+				MapLocationType.Vacant => "secondary",
+				_ => throw new NotImplementedException() // This should never be reached.
+			};
 		}
 	}
 }

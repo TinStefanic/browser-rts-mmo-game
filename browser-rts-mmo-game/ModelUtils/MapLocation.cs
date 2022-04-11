@@ -2,7 +2,7 @@
 
 namespace BrowserGame.ModelUtils
 {
-	public class MapLocation
+	public class MapLocation : IMapLocation
 	{
 		private readonly City _cityOrNull;
 
@@ -18,13 +18,14 @@ namespace BrowserGame.ModelUtils
 		public int XCoord { get; }
 		public int YCoord { get; }
 
+		/// <inheritdoc />
 		public string GetCityNameOrEmpty() => _cityOrNull?.Name ?? "";
 
+		/// <inheritdoc />
 		public MapLocationType GetMapLocationType(Player player)
 		{
 			if (IsVacant) return MapLocationType.Vacant;
-			else if (player.Id == _cityOrNull.PlayerId) return MapLocationType.Owned;
-			else return MapLocationType.Neutral;
+			return player.Id == _cityOrNull.PlayerId ? MapLocationType.Owned : MapLocationType.Neutral;
 		}
 	}
 

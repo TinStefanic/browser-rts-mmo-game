@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BrowserGame.ModelUtils
 {
-	public class Map
+	public class Map : IMap
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IConfiguration _configuration;
@@ -18,10 +18,8 @@ namespace BrowserGame.ModelUtils
 			_mapWidth = _configuration.GetValue("MapWidth", 10);
 			_mapHeight = _configuration.GetValue("MapHeight", 10);
 		}
-
-		/// <summary>
-		/// Returns tuple of (XCoord, YCoord).
-		/// </summary>
+		
+		/// <inheritdoc />
 		public async Task<(int, int)> RandomFreeCoordinatesAsync()
 		{
 			List<Tuple<int, int>> coordsInUseList = 
@@ -35,7 +33,7 @@ namespace BrowserGame.ModelUtils
 			var targetUnusedIndex = new Random().Next(_mapWidth * _mapHeight - coordsInUseList.Count);
 			var numUnusedFound = 0;
 			int x = 0, y = 0;
-
+			
 			while (numUnusedFound <= targetUnusedIndex)
 			{
 				if (!coordsInUseSet.Contains(Tuple.Create(x, y)))
@@ -43,18 +41,14 @@ namespace BrowserGame.ModelUtils
 					if (numUnusedFound++ == targetUnusedIndex) return (x, y);
 				}
 
-				if (++y == _mapHeight)
-				{
-					++x; y = 0;
-				}
+				if (++y != _mapHeight) continue;
+				++x; y = 0;
 			}
 
 			return (x, y);
 		}
 
-		/// <summary>
-		/// Returns MapLocation at coordinates (x mod MapWidth, y mod MapHeight).
-		/// </summary>
+		/// <inheritdoc />
 		public async Task<MapLocation> GetMapLocationAtAsync(int x, int y)
 		{
 			x = (_mapWidth + x) % _mapWidth;

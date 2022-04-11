@@ -17,6 +17,7 @@ namespace BrowserGame.ModelUtils
 			_context = context;
 		}
 
+		/// <inheritdoc />
 		public async Task StartUpgradeAsync(IBuilding building, City city)
 		{
 			Upgrade upgrade = await _context.Upgrades.FindAsync(building.GetUpgradeId());
@@ -31,6 +32,7 @@ namespace BrowserGame.ModelUtils
 			city.BuildQueue.Add(building, upgrade.UpgradeDuration / (decimal)TimeManager.Speed);
 		}
 
+		/// <inheritdoc />
 		public async Task FinishUpgradeAsync(int? targetId, BuildingType buildingType)
 		{
 			IBuilding building;

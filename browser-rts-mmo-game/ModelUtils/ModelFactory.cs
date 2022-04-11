@@ -15,6 +15,7 @@ namespace BrowserGame.ModelUtils
 			_configuration = configuration;
 		}
 
+		/// <inheritdoc />
 		public async Task<Player> CreateNewPlayerAsync(string playerName, string capitalName, string userId)
 		{
 			var newPlayer = new Player()
@@ -60,6 +61,7 @@ namespace BrowserGame.ModelUtils
 			_context.CityBuildings.AddRange(newCity.BuildingSlot.CityBuildings);
 		}
 
+		/// <inheritdoc />
 		public async Task<City> LoadCityAsync(int cityId)
 		{
 			City city = 
